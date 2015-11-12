@@ -1,0 +1,15 @@
+
+
+
+
+ <div class="container">
+
+ 
+  <div ng-repeat="song in songList" ng-show="songList">
+
+    <button ng-audio="{{ song }}" volume="0.5" start="0.2">Click me</button>
+    <p>    {{ song }}</p>
+  </div>
+
+  <!-- <button ng-audio="{{ songList[0] }}" volume="0.5" start="0.2">Click me</button> -->
+ </div>

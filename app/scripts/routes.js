@@ -14,9 +14,5 @@ angular.module('ntsApp').config(['$routeProvider', function($routeProvider) {
         controller: 'MainCtrl'
       })
 
-      .when('/chat', {
-        templateUrl: 'views/chat.html',
-        controller: 'ChatCtrl'
-      })
       .otherwise({redirectTo: '/'});
   }]);

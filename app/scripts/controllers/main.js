@@ -7,35 +7,70 @@
  * # MainCtrl
  * Controller of the ntsApp
  */
-angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageService, SongsFactory, Spotify) {
+angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageService, SongsFactory, Spotify, ngAudio, $state) {
+
+
+   
+
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
-  //  localStorageService.clearAll();
-    var todosInStore = localStorageService.get('todos');
+  localStorageService.clearAll();
+
+
+    	var todosInStore = localStorageService.get('todos');
 
      $scope.todos = todosInStore || [];
+     $scope.sound;
+
+     $scope.songList = [];
+     $scope.songs = [];
+
 
      // as this scope item changes, update what we've stored locally
      $scope.$watch('todos', function (){
      	localStorageService.set('todos', $scope.todos);
      }, true);
 
-     $scope.addTodo = function () {
-     	Spotify.getAlbums('41MnTivkwTO3UUJ8DrqEJJ,6JWc4iAiJ9FjyK0B59ABb4,6UXCm6bOO4gFlDQZV5yL37').then(function (data) {
-		  console.log(data);
-		});
-       console.log('in add to do');
-	  $scope.todos.push($scope.todo);
-	  $scope.todo = '';
-	  SongsFactory.getSongList();
+
+
+     $scope.addSong = function () {
+     	console.log('in add to do');
+  //    	Spotify.getAlbum('1cCAb1vN8uUsdfEylVmTLs').then(function (data) {
+		//   console.log(data);
+		// });
+		SongsFactory.getSongList()
+		.then (function (songs){
+			songs.items.forEach(function (song){
+				$scope.songList.push({
+					name: song.track.name,
+					artist: song.track.artists
+				});
+				$scope.songs.push(ngAudio.load(song.track.preview_url));
+			})
+			console.log('back from songlist in songs factory', $scope.songList);
+			 //$scope.sound = ngAudio.load($scope.songList[0]); // returns NgAudioObject
+
+			 console.log("scope sound", $scope.sound);
+
+		})
+       
+	  // $scope.todos.push($scope.todo);
+	  // $scope.todo = '';
 	};
 
-	$scope.removeTodo = function (index) {
-	  $scope.todos.splice(index, 1);
-	};
+	$scope.submitGuess = function (songToGuess){
+		console.log("song to guess ", songToGuess);
+		console.log("vars artist", $scope.guess.artist);
+		console.log("vars name", $scope.guess.songName);
+	}
+
+	$scope.haveSongs = function (){
+		return $scope.songList.length > 0;
+	}
+
   });
 
 
