@@ -18,6 +18,7 @@ angular.module('ntsApp', [
     'firebase',
     'firebase.ref',
     'LocalStorageModule'
+    // 'node.fs.app'
   ])
   .config(['localStorageServiceProvider', function(localStorageServiceProvider){
     localStorageServiceProvider.setPrefix('ls');

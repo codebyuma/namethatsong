@@ -25,4 +25,3 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 
 });
 
-/*GET "https://api.spotify.com/v1/users/spotify/playlists/4ORiMCgOe6UxBDqW8SF1Lm/tracks?market=US&limit=10" -H "Accept: application/json" -H "Authorization: Bearer BQAKZ_BPTtzT2f3gs1Pa47R1NdPjKVDg0ebNPcY63aarTqIkQ7EnDbPFKIkoFU0D1WQ7XpdgiR1yhXrK6ELvsNwm_Gya3pGa8Gs4WmzfFoofIy40QIVn_c4FqRMrEvyKG6n6pQA"*/

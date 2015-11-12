@@ -1,7 +1,9 @@
 {
   "name": "nts",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "angular-node-fs": "0.0.1"
+  },
   "repository": {},
   "devDependencies": {
     "chalk": "^0.4.0",
@@ -38,6 +40,5 @@
   },
   "scripts": {
     "test": "grunt test"
-
   }
 }
