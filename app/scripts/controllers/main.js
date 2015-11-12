@@ -36,12 +36,12 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 
 
 
-     $scope.addSong = function () {
+     $scope.addSong = function (type) {
      	console.log('in add to do');
   //    	Spotify.getAlbum('1cCAb1vN8uUsdfEylVmTLs').then(function (data) {
 		//   console.log(data);
 		// });
-		SongsFactory.getSongList()
+		SongsFactory.getSongList(type)
 		.then (function (songs){
 			songs.items.forEach(function (song){
 				$scope.songList.push({

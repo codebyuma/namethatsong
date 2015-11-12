@@ -6,7 +6,7 @@
     <h2>Welcome!</h2>
 
     <!-- Todos input -->
-    <button class="btn btn-primary" ng-click="addSong()">Generate Songs</a>
+    <button class="btn btn-primary" ng-click="addSong('hipHop')">Generate Songs</a>
  </div>
 
 <p></p>
@@ -22,7 +22,7 @@
 </div>
 
 <div class="container">
-  <form role="form" ng-submit="submitGuess(theSong)">
+  <form role="form" ng-submit="submitGuess(theSong)"> <!-- Not successfully getting the played song but I'm going to show one at a time only anyway -->
     <div class="row">
       <div class="input-group">
         <input type="text" ng-model="guess.artist" placeholder="Name the artist">
