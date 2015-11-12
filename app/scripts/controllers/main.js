@@ -7,7 +7,7 @@
  * # MainCtrl
  * Controller of the ntsApp
  */
-angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageService, SongsFactory) {
+angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageService, SongsFactory, Spotify) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -24,6 +24,9 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
      }, true);
 
      $scope.addTodo = function () {
+     	Spotify.getAlbums('41MnTivkwTO3UUJ8DrqEJJ,6JWc4iAiJ9FjyK0B59ABb4,6UXCm6bOO4gFlDQZV5yL37').then(function (data) {
+		  console.log(data);
+		});
        console.log('in add to do');
 	  $scope.todos.push($scope.todo);
 	  $scope.todo = '';

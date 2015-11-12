@@ -6,7 +6,7 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 	// $http.defaults.headers.common['Authorization'] = 'Bearer BQAKZ_BPTtzT2f3gs1Pa47R1NdPjKVDg0ebNPcY63aarTqIkQ7EnDbPFKIkoFU0D1WQ7XpdgiR1yhXrK6ELvsNwm_Gya3pGa8Gs4WmzfFoofIy40QIVn_c4FqRMrEvyKG6n6pQA';
 
 
-	$http.defaults.headers.common.Authorization = 'Bearer BQAKZ_BPTtzT2f3gs1Pa47R1NdPjKVDg0ebNPcY63aarTqIkQ7EnDbPFKIkoFU0D1WQ7XpdgiR1yhXrK6ELvsNwm_Gya3pGa8Gs4WmzfFoofIy40QIVn_c4FqRMrEvyKG6n6pQA';
+	$http.defaults.headers.common.Authorization = 'Bearer BQB_66d_jYQS7XRG_1v8g78h7_3cXNP5tuduFQL35EkFDCCVVBiuVfp9_TYQLqKzRHVCdvWNCPFQ8AGZw47oQmjtHEfHaPeJ1AtogzWG2Y4Woc4C2D_-Bkh5iAGF33kmMRVmB98';
 
 	SongsFactory.getSongList = function (){
 		console.log('in get song list');
