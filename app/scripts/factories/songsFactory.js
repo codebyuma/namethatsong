@@ -22,7 +22,7 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 	SongsFactory.getSongList = function (type){
 		// console.log('in get song list');
 
-		var url = 'https://api.spotify.com/v1/users/' + playlistOptions[type].user + '/playlists/' + playlistOptions[type].id + '/tracks?market=US&limit=9'
+		var url = 'https://api.spotify.com/v1/users/' + playlistOptions[type].user + '/playlists/' + playlistOptions[type].id + '/tracks?market=US&limit=20'
 
 		return $http.get(url)
 		.then (function(response){

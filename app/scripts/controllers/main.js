@@ -43,10 +43,11 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 
 
      function getNextSong() {
-		var num = Math.floor((Math.random() * 9));
+     	console.log("in getnextsong", $scope.songList.length);
+		var num = Math.floor((Math.random() * $scope.songList.length-1));
 
 		while ($scope.songList && $scope.songList[num].played)
-			num = Math.floor((Math.random() * 10));
+			num = Math.floor((Math.random() * $scope.songList.length-1));
 		return num;
 	}
 
@@ -90,6 +91,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 			})
 
 			 $scope.gameOver = false;
+			 $scope.guessing = false;
 			 $scope.currentSong = getNextSong();
 			 $scope.loadGuessOptions();
 			 
@@ -142,6 +144,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 
 	$scope.stopTimer = function () {
 	  document.getElementsByTagName('timer')[0].stop();
+	  //console.log( document.getElementsByTagName('timer')[0]);
 	  console.log($scope.songs[$scope.currentSong].currentTime);
 	}
 
