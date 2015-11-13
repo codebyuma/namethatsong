@@ -27,6 +27,9 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 
      $scope.songList = [];
      $scope.songs = [];
+     $scope.maxRounds = 1;
+     $scope.round = 0;
+     $scope.gameOver = false;
 
 
      // as this scope item changes, update what we've stored locally
@@ -52,7 +55,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 			})
 			console.log('back from songlist in songs factory', $scope.songList);
 			 //$scope.sound = ngAudio.load($scope.songList[0]); // returns NgAudioObject
-
+			 $scope.gameOver = false;
 			 console.log("scope sound", $scope.sound);
 
 		})
@@ -61,10 +64,30 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 	  // $scope.todo = '';
 	};
 
-	$scope.submitGuess = function (songToGuess){
-		console.log("song to guess ", songToGuess);
+	$scope.submitGuess = function (){
+		var songToGuess = $scope.songList[$scope.round];
+		console.log("song to guess ", songToGuess.name);
+		console.log("artist to guess ", songToGuess.artist.name);
 		console.log("vars artist", $scope.guess.artist);
 		console.log("vars name", $scope.guess.songName);
+
+		if (songToGuess.name == $scope.guess.songName)
+			console.log("correct song name");
+
+		songToGuess.artist.forEach(function(artist){
+			if ($scope.guess.artist == artist.name)
+				console.log("correct artist");
+		})
+
+		if ($scope.round<$scope.maxRounds)
+			$scope.round++;
+		else {
+			$scope.gameOver = true;
+			$scope.songList = [];
+		    $scope.songs = [];
+		    $scope.round = 0;
+		}
+		$scope.guess = null;
 	}
 
 	$scope.haveSongs = function (){

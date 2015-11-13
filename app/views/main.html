@@ -2,27 +2,41 @@
 
 
 
+
+
  <div class="container">
     <h2>Welcome!</h2>
 
     <!-- Todos input -->
-    <button class="btn btn-primary" ng-click="addSong('hipHop')">Generate Songs</a>
+    <button class="btn btn-primary" ng-click="addSong('hits')">Generate Songs</a>
  </div>
 
 <p></p>
+<div ng-show="gameOver">
+GAME OVER!
+</div>
 
 
+<div class="play" ng-show="haveSongs() && !gameOver">
+  Current round: {{ round + 1 }}
 
-<div class="play" ng-show="haveSongs()">
+    <button ng-click="songs[round].play()" volume="0.5" start="0.2" class="btn btn-info" >Start</button>
+    <button ng-click="songs[round].pause()" volume="0.5" start="0.2" class="btn btn-success" >Buzzer!</button>
+    Current Time: {{songs[round].currentTime | trackTime}}
+
+</div>
+
+<!-- 
+<div class="play" ng-show="haveSongs() && !gameOver">
  <div ng-repeat="song in songs" ng-show="songList">
     <button ng-click="song.play()" volume="0.5" start="0.2" class="btn btn-info" >Start</button>
     <button ng-click="song.pause()" volume="0.5" start="0.2" class="btn btn-success" >Buzzer!</button>
     Current Time: {{song.currentTime | trackTime}}
   </div>
 </div>
-
-<div class="container">
-  <form role="form" ng-submit="submitGuess(theSong)"> <!-- Not successfully getting the played song but I'm going to show one at a time only anyway -->
+ -->
+<div class="container" ng-show="haveSongs() && !gameOver">
+  <form role="form" ng-submit="submitGuess()"> 
     <div class="row">
       <div class="input-group">
         <input type="text" ng-model="guess.artist" placeholder="Name the artist">
@@ -35,7 +49,7 @@
   </form>
 </div>
 
-<div ng-show="haveSongs()">
+<div ng-show="haveSongs() && !gameOver">
  <div ng-repeat="theSong in songList">
     {{ theSong.name }} by {{ theSong.artist[0].name }}
   </div>
