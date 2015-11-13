@@ -24,10 +24,11 @@
     <!-- Todos input -->
 </div>
 <div class="play" ng-show="haveSongs() && !gameOver">
-    Current round: {{ round + 1 }}
-    
+  <div>
+    Current round: {{ round + 1 }}     |     Current score: {{ score }}
+</div>
     <button ng-click="songs[currentSong].play()" volume="0.5" start="0.2" class="btn btn-info">Start</button>
-    <button ng-click="songs[currentSong].pause()" volume="0.5" start="0.2" class="btn btn-success">Buzzer!</button>
+    <button ng-click="buzzIn()" volume="0.5" start="0.2" class="btn btn-success">Buzzer!</button>
     Current Time: {{songs[currentSong].currentTime | trackTime}}
 </div>
 <!-- 
@@ -39,7 +40,7 @@
   </div>
 </div>
  -->
-<div class="container" ng-show="haveSongs() && !gameOver">
+<div class="container" ng-show="haveSongs() && !gameOver && guessing">
     <form role="form" ng-submit="submitGuess()">
         <div class="row">
             <div class="input-group">

@@ -32,6 +32,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
      $scope.round = 0;
      $scope.gameOver = false;
      $scope.score = 0;
+     $scope.guessing = false;
      
      // as this scope item changes, update what we've stored locally
      $scope.$watch('todos', function (){
@@ -40,36 +41,46 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 
 
      function getNextSong() {
-		var num = Math.floor((Math.random() * 10));
-		while ($scope.songList[num].played)
+		var num = Math.floor((Math.random() * 9));
+		// console.log("checking songList" , $scope.songList!=null)
+		// console.log("checking played", $scope.songList[num].played)
+		console.log("num", num);
+		console.log("scope songlist length", $scope.songList.length);
+		while ($scope.songList && $scope.songList[num].played)
 			num = Math.floor((Math.random() * 10));
 		return num;
 	}
 
-
+	$scope.buzzIn = function (){
+		$scope.songs[$scope.currentSong].pause();
+		$scope.guessing = true;
+	}
 
      $scope.addSong = function () {
      	var type = $scope.category.type;
      	$scope.start = false;
      	$scope.score = 0;
-     	console.log('in add to do');
+     	
   //    	Spotify.getAlbum('1cCAb1vN8uUsdfEylVmTLs').then(function (data) {
 		//   console.log(data);
 		// });
 		SongsFactory.getSongList(type)
 		.then (function (songs){
+
 			songs.items.forEach(function (song){
-				$scope.songList.push({
-					name: song.track.name,
-					artist: song.track.artists,
-					played: false
-				});
-				$scope.songs.push(ngAudio.load(song.track.preview_url));
+				if (song){
+					$scope.songList.push({
+						name: song.track.name,
+						artist: song.track.artists,
+						played: false
+					});
+					$scope.songs.push(ngAudio.load(song.track.preview_url));
+				}
 			})
-			console.log('back from songlist in songs factory', $scope.songList);
+			//console.log('back from songlist in songs factory', $scope.songList);
 			 //$scope.sound = ngAudio.load($scope.songList[0]); // returns NgAudioObject
 			 $scope.gameOver = false;
-			 console.log("scope sound", $scope.sound);
+			// console.log("scope sound", $scope.sound);
 			 $scope.currentSong = getNextSong();
 
 
@@ -82,7 +93,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 	$scope.submitGuess = function (){
 		var songToGuess = $scope.songList[$scope.currentSong];
 		console.log("song to guess ", songToGuess.name);
-		console.log("artist to guess ", songToGuess.artist.name);
+		console.log("artist to guess ", songToGuess.artist[0].name);
 		console.log("vars artist", $scope.guess.artist);
 		console.log("vars name", $scope.guess.songName);
 
@@ -100,7 +111,13 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 
 		if ($scope.round<$scope.maxRounds){
 			$scope.round++;
+			$scope.songList[$scope.currentSong].played = true;
+			$scope.guessing = false;
+
+			// console.log("end of round, current song", $scope.currentSong);
+			// console.log("end of round, current song played", $scope.songList[$scope.currentSong].played);
 			$scope.currentSong = getNextSong();
+			// console.log("end of round, UPDATED current song? ", $scope.currentSong);
 		}
 		else {
 			$scope.gameOver = true;
