@@ -6,7 +6,7 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 	// $http.defaults.headers.common['Authorization'] = 'Bearer BQAKZ_BPTtzT2f3gs1Pa47R1NdPjKVDg0ebNPcY63aarTqIkQ7EnDbPFKIkoFU0D1WQ7XpdgiR1yhXrK6ELvsNwm_Gya3pGa8Gs4WmzfFoofIy40QIVn_c4FqRMrEvyKG6n6pQA';
 
 
-	$http.defaults.headers.common.Authorization = 'Bearer BQAl0OnzMrKkgkIvIk67KSKEMd3WOB9of0QsrvsCA3ftD2Az9hL2udJZHoSMxJjfyzOnvk8J_AdKlXKy3raTAqXa-C4CmtV77z1lRy_30yIptqzjIZTa6hZP80rbIIAyfDdArpY';
+	$http.defaults.headers.common.Authorization = 'Bearer BQClzcZHbGpxTxvoVUmVJ6TlG5vg7vIVbS_F3FQ3ynp0U92iE58zlQV3VVFi-l8mbaiY539yBbKs0R64r9d4zxmvW983jsd1AU7cPGfT1ATTpM-pAsBQrHwLUp4VimykKgJoDmY';
 
 	var playlistOptions = {
 		"Current Top 40": {user: 'spotify', type: 'top hits', id: '5FJXhjdILmRA2z5bvz4nzf'},
@@ -23,9 +23,7 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 		// console.log('in get song list');
 
 		var url = 'https://api.spotify.com/v1/users/' + playlistOptions[type].user + '/playlists/' + playlistOptions[type].id + '/tracks?market=US&limit=9'
-		// console.log("url", url);
 
-		// return $http.get('https://api.spotify.com/v1/users/spotify/playlists/5FJXhjdILmRA2z5bvz4nzf/tracks?market=US&limit=10')
 		return $http.get(url)
 		.then (function(response){
 			console.log('response: ', response.data);
