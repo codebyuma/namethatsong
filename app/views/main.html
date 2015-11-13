@@ -7,14 +7,28 @@
  <div class="container">
     <h2>Welcome!</h2>
 
+    <p></p>
+    <div ng-show="gameOver">
+    GAME OVER! Your final score is {{ score }}.
+    </div>
+
+    <div class="container" ng-show="!haveSongs() && start">
+      <form role="form" ng-submit="addSong()"> 
+        <div class="row">
+          <div class="input-group">
+            <label>Category: </label><input type="text" ng-model="category.type" placeholder="Enter the category">
+            <button class="btn btn-primary">Generate Songs</a>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
     <!-- Todos input -->
-    <button class="btn btn-primary" ng-click="addSong('hits')">Generate Songs</a>
+    
  </div>
 
-<p></p>
-<div ng-show="gameOver">
-GAME OVER!
-</div>
+
 
 
 <div class="play" ng-show="haveSongs() && !gameOver">
@@ -39,8 +53,9 @@ GAME OVER!
   <form role="form" ng-submit="submitGuess()"> 
     <div class="row">
       <div class="input-group">
-        <input type="text" ng-model="guess.artist" placeholder="Name the artist">
-        <input type="text" ng-model="guess.songName" placeholder="Name the song">
+        <label>Song: </label><input type="text" ng-model="guess.songName" placeholder="Name the song">
+        <label>By: </label><input type="text" ng-model="guess.artist" placeholder="Name the artist">
+
         <span class="input-group-btn">
           <input type="submit" class="btn btn-primary" value="Guess!">
         </span>

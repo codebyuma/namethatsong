@@ -25,11 +25,13 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
      $scope.todos = todosInStore || [];
      $scope.sound;
 
+     $scope.start = true;
      $scope.songList = [];
      $scope.songs = [];
-     $scope.maxRounds = 1;
+     $scope.maxRounds = 2;
      $scope.round = 0;
      $scope.gameOver = false;
+     $scope.score = 0;
 
 
      // as this scope item changes, update what we've stored locally
@@ -39,7 +41,10 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 
 
 
-     $scope.addSong = function (type) {
+     $scope.addSong = function () {
+     	var type = $scope.category.type;
+     	$scope.start = false;
+     	$scope.score = 0;
      	console.log('in add to do');
   //    	Spotify.getAlbum('1cCAb1vN8uUsdfEylVmTLs').then(function (data) {
 		//   console.log(data);
@@ -71,12 +76,16 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 		console.log("vars artist", $scope.guess.artist);
 		console.log("vars name", $scope.guess.songName);
 
-		if (songToGuess.name == $scope.guess.songName)
+		if (songToGuess.name == $scope.guess.songName){
 			console.log("correct song name");
+			$scope.score++;
+		}
 
 		songToGuess.artist.forEach(function(artist){
-			if ($scope.guess.artist == artist.name)
+			if ($scope.guess.artist == artist.name){
 				console.log("correct artist");
+				$scope.score++;
+			}
 		})
 
 		if ($scope.round<$scope.maxRounds)
@@ -86,6 +95,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 			$scope.songList = [];
 		    $scope.songs = [];
 		    $scope.round = 0;
+		    $scope.start = true;
 		}
 		$scope.guess = null;
 	}
