@@ -28,7 +28,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
      $scope.start = true;
      $scope.songList = [];
      $scope.songs = [];
-     $scope.maxRounds = 2;
+     $scope.maxRounds = 4;
      $scope.round = 0;
      $scope.gameOver = false;
 
@@ -44,10 +44,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 
      function getNextSong() {
 		var num = Math.floor((Math.random() * 9));
-		// console.log("checking songList" , $scope.songList!=null)
-		// console.log("checking played", $scope.songList[num].played)
-		console.log("num", num);
-		console.log("scope songlist length", $scope.songList.length);
+
 		while ($scope.songList && $scope.songList[num].played)
 			num = Math.floor((Math.random() * 10));
 		return num;
@@ -58,20 +55,29 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 		$scope.guessing = true;
 	}
 
+	$scope.timesUp = function (){
+		$scope.gameOver = true;
+			$scope.songList = [];
+		    $scope.songs = [];
+		    $scope.round = 0;
+		    $scope.start = true;
+		    $scope.ready = false;
+
+
+	}
+
      $scope.addSongs = function () {
      	var type = $scope.category.type;
      	$scope.start = false;
      	$scope.score = 0;
      	
-  //    	Spotify.getAlbum('1cCAb1vN8uUsdfEylVmTLs').then(function (data) {
-		//   console.log(data);
-		// });
+
 		SongsFactory.getSongList(type)
 		.then (function (songs){
 
 			songs.items.forEach(function (song){
 				if (song){
-					console.log(song);
+					
 					$scope.songList.push({
 						name: song.track.name,
 						artist: song.track.artists,
@@ -117,33 +123,31 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 	            	})
 	            })
 	         if (count > 1){
-	         	console.log("nope");
 	         	count--;
 	         } else {
-	         	console.log("WORKING??", $scope.songList);
+	         	// $scope.songList.forEach(function(song){
+	         	// 	console.log("pre shuffle", song.guessChoices);
+	         	// 	_.shuffle(song.guessChoices);
+	         	// 	console.log("post shuffle", song.guessChoices);
+	         	// })
 	         	$scope.ready = true;
 	         }
 	    })
 	}
+
+
+	$scope.startTimer = function () {
+  		document.getElementsByTagName('timer')[0].start();
+	}
+
+	$scope.stopTimer = function () {
+	  document.getElementsByTagName('timer')[0].stop();
+	  console.log($scope.songs[$scope.currentSong].currentTime);
+	}
+
 	$scope.submitGuess = function (){
 		var songToGuess = $scope.songList[$scope.currentSong].combinedSongInfo;
-		// console.log("song to guess ", songToGuess.name);
-		// console.log("artist to guess ", songToGuess.artist[0].name);
 
-		// console.log("the guesssed guess", $scope.myGuess);
-		// console.log("vars name", $scope.guess.songName);
-
-		// if (songToGuess.name == $scope.guess.songName){
-		// 	console.log("correct song name");
-		// 	$scope.score++;
-		// }
-
-		// songToGuess.artist.forEach(function(artist){
-		// 	if ($scope.guess.artist == artist.name){
-		// 		console.log("correct artist");
-		// 		$scope.score++;
-		// 	}
-		// })
 		if (songToGuess === $scope.myGuess){
 			console.log("CORRECCCCTTTT");
 			$scope.score++;
@@ -154,11 +158,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 			$scope.round++;
 			$scope.songList[$scope.currentSong].played = true;
 			$scope.guessing = false;
-
-			// console.log("end of round, current song", $scope.currentSong);
-			// console.log("end of round, current song played", $scope.songList[$scope.currentSong].played);
 			$scope.currentSong = getNextSong();
-			// console.log("end of round, UPDATED current song? ", $scope.currentSong);
 		}
 		else {
 			$scope.gameOver = true;
@@ -177,7 +177,4 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 	}
 
   });
-
-
-/*curl -X GET "https://api.spotify.com/v1/tracks?ids=7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B&market=US" -H "Accept: application/json" -H "Authorization: Bearer BQAKZ_BPTtzT2f3gs1Pa47R1NdPjKVDg0ebNPcY63aarTqIkQ7EnDbPFKIkoFU0D1WQ7XpdgiR1yhXrK6ELvsNwm_Gya3pGa8Gs4WmzfFoofIy40QIVn_c4FqRMrEvyKG6n6pQA"*/
 

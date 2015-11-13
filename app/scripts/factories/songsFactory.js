@@ -6,7 +6,7 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 	// $http.defaults.headers.common['Authorization'] = 'Bearer BQAKZ_BPTtzT2f3gs1Pa47R1NdPjKVDg0ebNPcY63aarTqIkQ7EnDbPFKIkoFU0D1WQ7XpdgiR1yhXrK6ELvsNwm_Gya3pGa8Gs4WmzfFoofIy40QIVn_c4FqRMrEvyKG6n6pQA';
 
 
-	$http.defaults.headers.common.Authorization = 'Bearer BQBBFYWHxURyntb36mPo0a5I1Beq34hvQzoQLiXxpdxk28ObUtAzHP0p7GMLfX1hvCFs71-dRxmd1qkbO3wy1PLk-nOku_ZgKYFTjUvhpho-vlVhZs-unfTsrKhQUJJhyPNQnAY';
+	$http.defaults.headers.common.Authorization = 'Bearer BQBEO5zrqr4gAYUf59Jl2bLEe4uMHJyDjuD3kIxfNsYWnrJiZ57LxBQCKFT5knjkizm95qSSBB5gb2duBFgjs0zZEAxIj7sXyusA4-rc0tT5qIGfERJdz4dg0mXz_VSt16IPPZY';
 
 	var playlistOptions = {
 		"Current Top 40": {user: 'spotify', type: 'top hits', id: '5FJXhjdILmRA2z5bvz4nzf'},
@@ -34,57 +34,7 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 		});
 	};
 
-	// SongsFactory.getRelated = function (song){
-	// 	var artistId = song.track.artists[0].uri.split(":")[2];
-	// 	var guessChoices = [];
-	// 	// var relatedArtists;
-	// 	// var relatedSongs = [];
-	// 	// var guessChoices = [];
 
-	// 	// var relatedArtistsUrl = 'https://api.spotify.com/v1/artists/' + artistId + '/related-artists/';
-	// 	// var relatedSongsUrl;
-
-	// 	// return $http.get(relatedArtistsUrl)
-	// 	// .then (function (response){
-	// 	// 	relatedArtists = response.data.artists.slice(0,3);
-
-	// 	// 	relatedArtists.forEach(function (_artist){
-	// 	// 		relatedSongsUrl = 'https://api.spotify.com/v1/artists/' + _artist.uri.split(":")[2] +  '/top-tracks?country=US';
-	// 	// 		return $http.get(relatedSongsUrl)
-	// 	// 		.then (function (response){
-	// 	// 			guessChoices.push({
-	// 	// 				artist: _artist.name,
-	// 	// 				song: response.data.tracks[0].name
-	// 	// 			})
-	// 	// 			if (guessChoices.length === 3)
-	// 	// 				return guessChoices;
-	// 	// 		})
-	// 	// 	})
-
-	// 	// })
-
-	// 	getRelatedArtists(artistId)
-	// 	.then (function (relatedArts){
-	// 		var relatedArtists = relatedArts;
-	// 		console.log("back in related artists", relatedArtists);
-
-
-	// 		relatedArtists.forEach(function (_artist){
-	// 			getRelatedSongs(_artist.uri.split(":")[2])
-	// 			.then (function (relatedSong){
-	// 				//console.log("back in related artists with songs", relatedSong);
-	// 				guessChoices.push({
-	// 					artist: _artist.name,
-	// 					song: relatedSong
-	// 				})
-	// 				if (guessChoices.length === 3)
-	// 					return guessChoices;
-
-	// 			})
-	// 		})
-
-	// 	})
-	// }
 
 	SongsFactory.getRelatedArtists = function (artistId){
 		var relatedArtistsUrl = 'https://api.spotify.com/v1/artists/' + artistId + '/related-artists/';
@@ -103,12 +53,6 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 		return $http.get(relatedSongsUrl)
 		.then (function (response){
 			return response.data.tracks[0].name;
-			// guessChoices.push({
-			// 	artist: _artist.name,
-			// 	song: response.data.tracks[0].name
-			// })
-			// if (guessChoices.length === 3)
-			// 	return guessChoices;
 		}, function (error){
 			return "Error getting related song";
 		})

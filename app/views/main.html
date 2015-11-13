@@ -27,37 +27,22 @@
   <div>
     Current round: {{ round + 1 }}     |     Current score: {{ score }}
 </div>
-    <button ng-click="songs[currentSong].play()" volume="0.5" start="0.2" class="btn btn-info">Start</button>
-    <button ng-click="buzzIn()" volume="0.5" start="0.2" class="btn btn-success">Buzzer!</button>
-    Current Time: {{songs[currentSong].currentTime | trackTime}}
-
+    <button ng-click="songs[currentSong].play();startTimer()" volume="0.5" start="0.2" class="btn btn-info">Start</button>
+    <button ng-click="buzzIn();stopTimer()" volume="0.5" start="0.2" class="btn btn-success">Buzzer!</button>
+<!--     Current Time: {{songs[currentSong].currentTime | trackTime}} -->
+    <br>
+    <timer interval="1000" countdown="35" finish-callback="timesUp()" autostart="false">Time left: <b>{{countdown}}</b></timer>
+<!-- 
     <br>
     guessesssS?   {{ songList[currentSong].guessChoices[0].combinedSongInfo }}
-
-</div>
-<!-- 
-<div class="play" ng-show="haveSongs() && !gameOver">
- <div ng-repeat="song in songs" ng-show="songList">
-    <button ng-click="song.play()" volume="0.5" start="0.2" class="btn btn-info" >Start</button>
-    <button ng-click="song.pause()" volume="0.5" start="0.2" class="btn btn-success" >Buzzer!</button>
-    Current Time: {{song.currentTime | trackTime}}
-  </div>
-</div>
  -->
+</div>
+
 <div class="container" ng-show="haveSongs() && !gameOver && guessing">
     <form role="form" ng-submit="submitGuess()">
         <div class="row">
             <div class="input-group">
-<!--                 <label>Song: </label>
-                <input type="text" ng-model="guess.songName" placeholder="Name the song">
-                <label>By: </label>
-                <input type="text" ng-model="guess.artist" placeholder="Name the artist"> -->
                 <select class="form-control" name="song" ng-options="choice.combinedSongInfo as choice.combinedSongInfo for choice in songList[currentSong].guessChoices" ng-model="myGuess" required></select>
-<!--                     <div ng-repeat="choice in songList[currentSong].guessChoices">
-                      <input type="radio" name="guess" ng-model="guessed.song" ng-value="choice"> {{ choice.song }} by {{ choice.artist }}
-                    </div> -->
-                <!-- <br>
-                <input type="radio" name="guess" id="guess" ng-repeat="choice in songList[currentSong].guessChoices"> {{ choice.song }} by {{ choice.artist }} -->
 
                       <span class="input-group-btn">
                   <input type="submit" class="btn btn-primary" value="Guess!">

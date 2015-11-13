@@ -20,7 +20,8 @@ angular.module('ntsApp', [
     'LocalStorageModule',
     'spotify',
     'ngAudio',
-    'ui.router'
+    'ui.router',
+    'timer'
   ])
   .config(['localStorageServiceProvider', function(localStorageServiceProvider){
     localStorageServiceProvider.setPrefix('ls');
