@@ -1,45 +1,35 @@
 
-
-
-
-
-
- <div class="container">
-    <h2>Welcome!</h2>
-
-    <p></p>
-    <div ng-show="gameOver">
-    GAME OVER! Your final score is {{ score }}.
+<div class="row">
+    <div class="col-xs-5"></div>
+    <div class="col-xs-4">
+      <div ng-show="gameOver">
+        GAME OVER! Your final score is {{ score }}.
     </div>
-
-    <div class="container" ng-show="!haveSongs() && start">
-      <form role="form" ng-submit="addSong()"> 
-        <div class="row">
-          <div class="input-group">
-            <label>Category: </label><input type="text" ng-model="category.type" placeholder="Enter the category">
-            <button class="btn btn-primary">Generate Songs</a>
-          </div>
-        </div>
-      </form>
+      <div ng-show="!haveSongs() && start">
+          <form role="form" ng-submit="addSong()">
+              <div class="row">
+                  <div class="input-group">
+                      <label>Category: </label>
+                        <select class="form-control" name="category" ng-model="category.type">
+                           <option ng-repeat="category in categoryOptions">{{ category }}</option>
+                         </select>
+                      <br>
+                      <button class="btn btn-primary">Generate Songs</a>
+                  </div>
+              </div>
+          </form>
+      </div>
     </div>
-
-
+    <div class="col-xs-3"></div>
     <!-- Todos input -->
-    
- </div>
-
-
-
-
-<div class="play" ng-show="haveSongs() && !gameOver">
-  Current round: {{ round + 1 }}
-
-    <button ng-click="songs[round].play()" volume="0.5" start="0.2" class="btn btn-info" >Start</button>
-    <button ng-click="songs[round].pause()" volume="0.5" start="0.2" class="btn btn-success" >Buzzer!</button>
-    Current Time: {{songs[round].currentTime | trackTime}}
-
 </div>
-
+<div class="play" ng-show="haveSongs() && !gameOver">
+    Current round: {{ round + 1 }}
+    
+    <button ng-click="songs[currentSong].play()" volume="0.5" start="0.2" class="btn btn-info">Start</button>
+    <button ng-click="songs[currentSong].pause()" volume="0.5" start="0.2" class="btn btn-success">Buzzer!</button>
+    Current Time: {{songs[currentSong].currentTime | trackTime}}
+</div>
 <!-- 
 <div class="play" ng-show="haveSongs() && !gameOver">
  <div ng-repeat="song in songs" ng-show="songList">
@@ -50,22 +40,22 @@
 </div>
  -->
 <div class="container" ng-show="haveSongs() && !gameOver">
-  <form role="form" ng-submit="submitGuess()"> 
-    <div class="row">
-      <div class="input-group">
-        <label>Song: </label><input type="text" ng-model="guess.songName" placeholder="Name the song">
-        <label>By: </label><input type="text" ng-model="guess.artist" placeholder="Name the artist">
-
-        <span class="input-group-btn">
+    <form role="form" ng-submit="submitGuess()">
+        <div class="row">
+            <div class="input-group">
+                <label>Song: </label>
+                <input type="text" ng-model="guess.songName" placeholder="Name the song">
+                <label>By: </label>
+                <input type="text" ng-model="guess.artist" placeholder="Name the artist">
+                <span class="input-group-btn">
           <input type="submit" class="btn btn-primary" value="Guess!">
         </span>
-      </div>
-    </div>
-  </form>
+            </div>
+        </div>
+    </form>
 </div>
-
 <div ng-show="haveSongs() && !gameOver">
- <div ng-repeat="theSong in songList">
-    {{ theSong.name }} by {{ theSong.artist[0].name }}
-  </div>
+    <div ng-repeat="theSong in songList">
+        {{ theSong.name }} by {{ theSong.artist[0].name }}
+    </div>
 </div>

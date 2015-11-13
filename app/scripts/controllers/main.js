@@ -18,7 +18,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
       'Karma'
     ];
   localStorageService.clearAll();
-
+  $scope.categoryOptions = SongsFactory.getCategories();
 
     	var todosInStore = localStorageService.get('todos');
 
@@ -32,12 +32,19 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
      $scope.round = 0;
      $scope.gameOver = false;
      $scope.score = 0;
-
-
+     
      // as this scope item changes, update what we've stored locally
      $scope.$watch('todos', function (){
      	localStorageService.set('todos', $scope.todos);
      }, true);
+
+
+     function getNextSong() {
+		var num = Math.floor((Math.random() * 10));
+		while ($scope.songList[num].played)
+			num = Math.floor((Math.random() * 10));
+		return num;
+	}
 
 
 
@@ -54,7 +61,8 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 			songs.items.forEach(function (song){
 				$scope.songList.push({
 					name: song.track.name,
-					artist: song.track.artists
+					artist: song.track.artists,
+					played: false
 				});
 				$scope.songs.push(ngAudio.load(song.track.preview_url));
 			})
@@ -62,6 +70,8 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 			 //$scope.sound = ngAudio.load($scope.songList[0]); // returns NgAudioObject
 			 $scope.gameOver = false;
 			 console.log("scope sound", $scope.sound);
+			 $scope.currentSong = getNextSong();
+
 
 		})
        
@@ -70,7 +80,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 	};
 
 	$scope.submitGuess = function (){
-		var songToGuess = $scope.songList[$scope.round];
+		var songToGuess = $scope.songList[$scope.currentSong];
 		console.log("song to guess ", songToGuess.name);
 		console.log("artist to guess ", songToGuess.artist.name);
 		console.log("vars artist", $scope.guess.artist);
@@ -88,8 +98,10 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 			}
 		})
 
-		if ($scope.round<$scope.maxRounds)
+		if ($scope.round<$scope.maxRounds){
 			$scope.round++;
+			$scope.currentSong = getNextSong();
+		}
 		else {
 			$scope.gameOver = true;
 			$scope.songList = [];

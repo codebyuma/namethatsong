@@ -6,17 +6,18 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 	// $http.defaults.headers.common['Authorization'] = 'Bearer BQAKZ_BPTtzT2f3gs1Pa47R1NdPjKVDg0ebNPcY63aarTqIkQ7EnDbPFKIkoFU0D1WQ7XpdgiR1yhXrK6ELvsNwm_Gya3pGa8Gs4WmzfFoofIy40QIVn_c4FqRMrEvyKG6n6pQA';
 
 
-	$http.defaults.headers.common.Authorization = 'Bearer BQCorIuo3IVysbVijIRM0YdDWQGNmGpYjUoOu3mAeLEUpJwCgkJ7cGtR6M6hCsx0sGgnZ80GeCyekhsBfQJyrFLTFZ52pScQOt39qCyBYVOSCd7tU8cA1ED42Rc7z2zD785A5rQ';
+	$http.defaults.headers.common.Authorization = 'Bearer BQAhKxBaOXN_0hMVZI2x55gOGfP7bpMacORK2kjjp06i47oGS7H73OY1EyF4_Q4XskHv9i917rmvPSFha5CIwAsZfcSSLyUz5fuufgr6QbUNe2w8-dOgjJ82--NtHXPC_WUXQrM';
 
 	var playlistOptions = {
-		hits: {user: 'spotify', type: 'top hits', id: '5FJXhjdILmRA2z5bvz4nzf'},
-		// {   user: 'digster.fm',
-		//     name: 'pop',
-		//     id: '4noDy1IQejcxDbTLvzuWhS'},
-		hipHop: {user: 'spotify', type: 'hip hop', id: '4BQ8KZLz0J08lgXXO74Uy3'}, // this one doesn't work
-		pop: {user: 'hyperswift', type: 'pop', id: '4kOhdyUN3MzFlPkREE9mm7'},
-	    classicRock: {user: 'sonymusicfinland', name: 'classic rock', id: '5BygwTQ3OrbiwVsQhXFHMz'}
+		"Current Top 40": {user: 'spotify', type: 'top hits', id: '5FJXhjdILmRA2z5bvz4nzf'},
+		//"Hip Hop": {user: 'spotify', type: 'hip hop', id: '4BQ8KZLz0J08lgXXO74Uy3'}, // this one doesn't work
+		"Pop": {user: 'hyperswift', type: 'pop', id: '4kOhdyUN3MzFlPkREE9mm7'},
+	    "Classic Rock": {user: 'sonymusicfinland', name: 'classic rock', id: '5BygwTQ3OrbiwVsQhXFHMz'}
 	};
+
+	SongsFactory.getCategories = function (){
+		return Object.keys(playlistOptions);
+	}
 
 	SongsFactory.getSongList = function (type){
 		console.log('in get song list');
