@@ -32,7 +32,7 @@
     Current Time: {{songs[currentSong].currentTime | trackTime}}
 
     <br>
-    guessesssS?   {{ songList[currentSong].guessChoices }}
+    guessesssS?   {{ songList[currentSong].guessChoices[0].combinedSongInfo }}
 
 </div>
 <!-- 
@@ -52,9 +52,10 @@
                 <input type="text" ng-model="guess.songName" placeholder="Name the song">
                 <label>By: </label>
                 <input type="text" ng-model="guess.artist" placeholder="Name the artist"> -->
-                    <div ng-repeat="choice in songList[currentSong].guessChoices">
-                      <input type="radio" name="guess" ng-model="guess" value="{{ choice }}"> {{ choice.song }} by {{ choice.artist }}
-                    </div>
+                <select class="form-control" name="song" ng-options="choice.combinedSongInfo as choice.combinedSongInfo for choice in songList[currentSong].guessChoices" ng-model="myGuess" required></select>
+<!--                     <div ng-repeat="choice in songList[currentSong].guessChoices">
+                      <input type="radio" name="guess" ng-model="guessed.song" ng-value="choice"> {{ choice.song }} by {{ choice.artist }}
+                    </div> -->
                 <!-- <br>
                 <input type="radio" name="guess" id="guess" ng-repeat="choice in songList[currentSong].guessChoices"> {{ choice.song }} by {{ choice.artist }} -->
 
@@ -65,10 +66,10 @@
         </div>
     </form>
 </div>
-<div ng-show="haveSongs() && !gameOver">
+<!-- <div ng-show="haveSongs() && !gameOver">
     <div ng-repeat="theSong in songList">
         {{ theSong.name }} by {{ theSong.artist[0].name }}
         <br>
         {{ theSong.guessChoices }}
     </div>
-</div>
+</div> -->
