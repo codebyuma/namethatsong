@@ -7,22 +7,23 @@
  * # MainCtrl
  * Controller of the ntsApp
  */
-angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageService, SongsFactory, Spotify, ngAudio, $state) {
+angular.module('ntsApp').controller('MainCtrl', function ($scope, SongsFactory, Spotify, ngAudio, $state, $firebaseObject, $firebaseArray, $timeout) {
 
 
-   
+	// var ref = new Firebase("https://incandescent-fire-7627.firebaseio.com");
+	// // download the data from ref onto a local object. this is an async request
+	// var syncObject = $firebaseObject(ref);
+	// // synchronize the object with a three-way data binding. As we update the data object, it syncs it across
+	// syncObject.$bindTo($scope, "data");
 
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  localStorageService.clearAll();
+	// var refTest = new Firebase("https://incandescent-fire-7627.firebaseio.com/tests");
+	// $scope.testArray = $firebaseArray(refTest);
+
+
+
   $scope.categoryOptions = SongsFactory.getCategories();
 
-    	var todosInStore = localStorageService.get('todos');
 
-     $scope.todos = todosInStore || [];
      $scope.sound;
 
      $scope.start = true;
@@ -34,32 +35,28 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 
      $scope.guessing = false;
      $scope.ready = false;
+     $scope.haveResult = false;
 
-     
-     // as this scope item changes, update what we've stored locally
-     $scope.$watch('todos', function (){
-     	localStorageService.set('todos', $scope.todos);
-     }, true);
+
 
 
      function getNextSong() {
 
 		var num = Math.floor((Math.random() * $scope.songList.length-1));
-
-		while ($scope.songList && $scope.songList[num].played)
+		console.log("is played?", $scope.songList[num].played)
+		while ($scope.songList && $scope.songList[num].played){
+			console.log("is played?", $scope.songList[num].played)
 			num = Math.floor((Math.random() * $scope.songList.length-1));
+		}
 		return num;
 	}
 
 	$scope.buzzIn = function (){
 		$scope.songs[$scope.currentSong].pause();
-			         	// SHUFFLE
-	         	$scope.songList.forEach(function(song){
-
-	         		console.log("pre shuffle", song.guessChoices);
-	         		song.guessChoices=shuffleArray(song.guessChoices);
-	         		console.log("post shuffle", song.guessChoices);
-	         	})
+     	// SHUFFLE
+     	$scope.songList.forEach(function(song){
+     		song.guessChoices=shuffleArray(song.guessChoices);
+     	})
 		$scope.guessing = true;
 	}
 
@@ -85,15 +82,18 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 
 			songs.items.forEach(function (song){
 				if (song){
-					
-					$scope.songList.push({
-						name: song.track.name,
-						artist: song.track.artists,
-						combinedSongInfo: song.track.name + " by " + song.track.artists[0].name,
-						artist_id: song.track.artists[0].uri.split(":")[2],
-						played: false
-					});
-					$scope.songs.push(ngAudio.load(song.track.preview_url));
+					if (song.track.preview_url != null){
+						$scope.songList.push({
+							name: song.track.name,
+							artist: mergeArtists(song.track.artists),
+							combinedSongInfo: song.track.name + " by " + mergeArtists(song.track.artists),
+							artist_id: song.track.artists[0].uri.split(":")[2],
+							played: false
+						});
+						console.log("song.track.name", song.track.name);
+						console.log("url", song.track.preview_url);
+						$scope.songs.push(ngAudio.load(song.track.preview_url));
+					}
 				}
 			})
 
@@ -101,7 +101,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 			 $scope.guessing = false;
 			 $scope.currentSong = getNextSong();
 			 $scope.loadGuessOptions();
-			 
+			 //$scope.testArray.$add({text: "woooo"});
 
 		})
        
@@ -109,16 +109,31 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 	  // $scope.todo = '';
 	};
 
+	var mergeArtists = function (arrOfArtists){
+		if (arrOfArtists.length===1)
+			return arrOfArtists[0].name
+		else {
+			var result = [];
+			arrOfArtists.forEach(function (artist){
+				result.push(artist.name);
+			})
+			return result.join(", ");
+		}
+	}
+
 	$scope.loadGuessOptions = function() {
 		var count = $scope.songList.length;
 	    $scope.songList.forEach(function(song) {
 	    	song.guessChoices = [{
-	    		artist: song.artist[0].name,
+	    		artist: song.artist,
 	    		song: song.name,
-	    		combinedSongInfo: song.name + " by " + song.artist[0].name
+	    		combinedSongInfo: song.name + " by " + song.artist
 	    	}];
 	        SongsFactory.getRelatedArtists(song.artist_id)
 	            .then(function(_artists) {
+	            	if (_artists.length<3){
+	            		song.played = true;
+	            	} 
 	            	_artists.forEach(function(artist){
 	            		SongsFactory.getRelatedSongs(artist.uri.split(":")[2])
 	            		.then (function (relatedSong){
@@ -160,37 +175,53 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 		}
 
 	$scope.startTimer = function () {
-  		document.getElementsByTagName('timer')[0].start();
+		
+		                $scope.$broadcast('timer-start');
+                $scope.timerRunning = true;
+  		//document.getElementsByTagName('timer')[0].start();
 	}
 
 	$scope.stopTimer = function () {
-	  document.getElementsByTagName('timer')[0].stop();
+		$scope.$broadcast('timer-stop');
+
+                $scope.timerRunning = false;
+	//  document.getElementsByTagName('timer')[0].stop();
 	  //console.log( document.getElementsByTagName('timer')[0]);
-	  console.log($scope.songs[$scope.currentSong].currentTime);
+	  // console.log($scope.songs[$scope.currentSong].currentTime);
+	  // console.log(Math.floor($scope.songs[$scope.currentSong].currentTime));
+	  // console.log($scope.songs[$scope.currentSong].remaining);
 	}
 
 	$scope.submitGuess = function (){
+		$scope.$broadcast('timer-reset');
+		$scope.haveResult = false;
+		$scope.result = "";
 		var songToGuess = $scope.songList[$scope.currentSong].combinedSongInfo;
-
+		$scope.songList[$scope.currentSong].played = true;
+		$scope.haveResult = true;
+		
 		if (songToGuess === $scope.myGuess){
-			console.log("CORRECCCCTTTT");
-			$scope.score++;
+			$scope.result = "You are correct!";
+			$scope.score=Math.floor($scope.score + 1 + $scope.songs[$scope.currentSong].remaining);
+			//Math.floor($scope.songs[$scope.currentSong].currentTime)
 			
+		} else {
+			$scope.result = "You are wrong! The correct answer is: " + songToGuess;
 		}
 
 		if ($scope.round<$scope.maxRounds){
 			$scope.round++;
-			$scope.songList[$scope.currentSong].played = true;
 			$scope.guessing = false;
 			$scope.currentSong = getNextSong();
 		}
 		else {
-			$scope.gameOver = true;
-			$scope.songList = [];
-		    $scope.songs = [];
-		    $scope.round = 0;
-		    $scope.start = true;
-		    $scope.ready = false;
+			$scope.guessing = false;
+
+            $timeout(function() {
+    			$scope.timesUp();
+			    $scope.haveResult = false;
+				$scope.result = "";
+            }, 2000);
 
 		}
 		$scope.guess = null;

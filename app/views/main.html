@@ -1,6 +1,12 @@
 
 <div class="row">
-    <div class="col-xs-5"></div>
+    <div class="col-xs-5">
+          <!-- anything typed in here is magically saved to our Firebase database! -->
+    <!-- <input type="text" ng-model="data.text"/> -->
+    <!-- all changes from our Firebase database magically appear here! -->
+    <!-- <h1>You said: {{ data.text }}</h1> -->
+   
+    </div>
     <div class="col-xs-4">
       <div ng-show="gameOver">
         GAME OVER! Your final score is {{ score }}.
@@ -14,13 +20,18 @@
                            <option ng-repeat="category in categoryOptions">{{ category }}</option>
                          </select>
                       <br>
-                      <button class="btn btn-primary">Generate Songs</a>
+                      <button class="btn btn-primary">Generate Songs</button>
                   </div>
               </div>
           </form>
       </div>
     </div>
-    <div class="col-xs-3"></div>
+    <div class="col-xs-3">
+
+      <div class="haveResult">
+        {{ result }}
+      </div>
+    </div>
     <!-- Todos input -->
 </div>
 <div class="play" ng-show="haveSongs() && !gameOver && ready">
@@ -31,11 +42,11 @@
     <button ng-click="buzzIn();stopTimer()" volume="0.5" start="0.2" class="btn btn-success">Buzzer!</button>
 <!--     Current Time: {{songs[currentSong].currentTime | trackTime}} -->
     <br>
-    <timer interval="1000" countdown="35" finish-callback="timesUp()" autostart="false">Time left: <b>{{countdown}}</b></timer>
-<!-- 
-    <br>
-    guessesssS?   {{ songList[currentSong].guessChoices[0].combinedSongInfo }}
- -->
+    <timer interval="1000" countdown="30" finish-callback="timesUp()" autostart="false">Time left: <b>{{countdown}}</b></timer>
+
+<!--     <br>
+    guessesssS?   {{ songList[currentSong].guessChoices }} -->
+
 </div>
 
 <div class="container" ng-show="haveSongs() && !gameOver && guessing">
@@ -51,10 +62,11 @@
         </div>
     </form>
 </div>
+<div>
+  <!-- {{ songList }} -->
+  </div>
 <!-- <div ng-show="haveSongs() && !gameOver">
     <div ng-repeat="theSong in songList">
-        {{ theSong.name }} by {{ theSong.artist[0].name }}
-        <br>
-        {{ theSong.guessChoices }}
+        {{ theSong.name }} by {{ theSong.artist[0].name }} - {{ theSong.played }}
     </div>
 </div> -->

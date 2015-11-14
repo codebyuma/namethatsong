@@ -6,13 +6,20 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 	// $http.defaults.headers.common['Authorization'] = 'Bearer BQAKZ_BPTtzT2f3gs1Pa47R1NdPjKVDg0ebNPcY63aarTqIkQ7EnDbPFKIkoFU0D1WQ7XpdgiR1yhXrK6ELvsNwm_Gya3pGa8Gs4WmzfFoofIy40QIVn_c4FqRMrEvyKG6n6pQA';
 
 
-	$http.defaults.headers.common.Authorization = 'Bearer BQC_wJnPQhErBclaz8XiSVJYJLZmdkD3bLDzP-L7LTkGZedqlCcWNCVOHZzsyHLBfUxHs1Wjg4OlFrqA0yhivZFlCyIDMzCgt9LWiyVvdDPymlrdoWybqBFf7xbmeaIsPmCpmtk';
+	$http.defaults.headers.common.Authorization = 'Bearer BQANM2nNXZBO1L1D2gtFIYfCsOPyGTdIzxSCKF3jq_fNENy0K5BgK-l-pBE6zV8vfSoj1XpvqpktDmCx5wc5aa7VG3NkrJppOrnfQK2iPktShcArhmJx-HGxzBU3VZGmtMIbxCU';
 
 	var playlistOptions = {
-		"Current Top 40": {user: 'spotify', type: 'top hits', id: '5FJXhjdILmRA2z5bvz4nzf'},
-		//"Hip Hop": {user: 'spotify', type: 'hip hop', id: '4BQ8KZLz0J08lgXXO74Uy3'}, // this one doesn't work
+		"Current Top 40": {user: 'spotify', kind: 'playlist', id: '5FJXhjdILmRA2z5bvz4nzf'},
+		"Hip Hop Throwbacks": {user: 'spotify', kind: 'playlist', id: '4jONxQje1Fmw9AFHT7bCp8'},
 		"Pop": {user: 'hyperswift', type: 'pop', id: '4kOhdyUN3MzFlPkREE9mm7'},
-	    "Classic Rock": {user: 'sonymusicfinland', name: 'classic rock', id: '5BygwTQ3OrbiwVsQhXFHMz'} // only has 9 songs
+		"Rock Solid Hits": {user: 'spotify', kind: 'playlist', id: '0JHYU9yefyVvlYAi2WTdKc'},
+	    "90s R&B": {user: 'spotify', kind: 'playlist', id: '7t5PfPV1MdYnpmGPxwv5Ef'},
+	    "Blues": {user: 'sonymusicthelegacy', kind: 'playlist', id: '57zcG5rzNtI8DYrUz0nVsP'},
+	    "Hits - 00's": {user: 'spotify', kind: 'playlist', id: '3UybCDm2O3JPQChfCG02EG'},
+	    "Hits - 90's": {user: 'spotify', kind: 'playlist', id: '2uAichKSjJSyrmal8Kb3W9'},
+	    "Hits - 80's": {user: 'spotify', kind: 'playlist', id: '5wDvHZhgPBlWyDEZ3jSMF4'},
+	    "Hits - 70's": {user: 'spotify', kind: 'playlist', id: '00K2xasnm9pDQk53SzNCht'}
+	    // "Beatles": {user: 'spotify', kind: 'artist', id: '3WrFJ7ztbogyGnTHbHJFl2'}
 	};
 
 	SongsFactory.getCategories = function (){
@@ -21,8 +28,13 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 
 	SongsFactory.getSongList = function (type){
 		// console.log('in get song list');
+		var url;
+		if (playlistOptions[type].kind === "playlist"){
+			 url = 'https://api.spotify.com/v1/users/' + playlistOptions[type].user + '/playlists/' + playlistOptions[type].id + '/tracks?market=US&limit=20'
+		} else {
+			url = 'https://api.spotify.com/v1/artists/' + playlistOptions[type].id +  '/top-tracks?country=US';
 
-		var url = 'https://api.spotify.com/v1/users/' + playlistOptions[type].user + '/playlists/' + playlistOptions[type].id + '/tracks?market=US&limit=20'
+		}
 
 		return $http.get(url)
 		.then (function(response){
