@@ -43,7 +43,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 
 
      function getNextSong() {
-     	console.log("in getnextsong", $scope.songList.length);
+
 		var num = Math.floor((Math.random() * $scope.songList.length-1));
 
 		while ($scope.songList && $scope.songList[num].played)
@@ -53,6 +53,13 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 
 	$scope.buzzIn = function (){
 		$scope.songs[$scope.currentSong].pause();
+			         	// SHUFFLE
+	         	$scope.songList.forEach(function(song){
+
+	         		console.log("pre shuffle", song.guessChoices);
+	         		song.guessChoices=shuffleArray(song.guessChoices);
+	         		console.log("post shuffle", song.guessChoices);
+	         	})
 		$scope.guessing = true;
 	}
 
@@ -127,16 +134,30 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, localStorageSe
 	         if (count > 1){
 	         	count--;
 	         } else {
-	         	// $scope.songList.forEach(function(song){
-	         	// 	console.log("pre shuffle", song.guessChoices);
-	         	// 	_.shuffle(song.guessChoices);
-	         	// 	console.log("post shuffle", song.guessChoices);
-	         	// })
+
 	         	$scope.ready = true;
 	         }
 	    })
 	}
 
+
+	var shuffleArray = function(array) {
+		  var m = array.length, t, i;
+		  
+		  // While there remain elements to shuffle
+		  while (m) {
+		    // Pick a remaining element…
+		    i = Math.floor(Math.random() * m--);
+		  
+		    // And swap it with the current element.
+		    t = array[m];
+		    array[m] = array[i];
+		    
+		    array[i] = t;
+		  }
+
+		  return array;
+		}
 
 	$scope.startTimer = function () {
   		document.getElementsByTagName('timer')[0].start();
