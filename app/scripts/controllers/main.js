@@ -7,7 +7,7 @@
  * # MainCtrl
  * Controller of the ntsApp
  */
-angular.module('ntsApp').controller('MainCtrl', function ($scope, SongsFactory, Spotify, ngAudio, $state, $firebaseObject, $firebaseArray, $timeout) {
+angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, SongsFactory, Spotify, ngAudio, $state, $firebaseObject, $firebaseArray, $timeout) {
 
 
 	// var ref = new Firebase("https://incandescent-fire-7627.firebaseio.com");
@@ -30,7 +30,8 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, SongsFactory, 
      $scope.songList = [];
      $scope.songs = [];
      $scope.maxRounds = 4;
-     $scope.round = 0;
+     $rootScope.round = 0;
+     $rootScope.score = 0;
      $scope.gameOver = false;
 
      $scope.guessing = false;
@@ -43,9 +44,9 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, SongsFactory, 
      function getNextSong() {
 
 		var num = Math.floor((Math.random() * $scope.songList.length-1));
-		console.log("is played?", $scope.songList[num].played)
+		console.log("is played?", $scope.songList[num])
 		while ($scope.songList && $scope.songList[num].played){
-			console.log("is played?", $scope.songList[num].played)
+			console.log("is played 2?", $scope.songList[num])
 			num = Math.floor((Math.random() * $scope.songList.length-1));
 		}
 		return num;
@@ -64,7 +65,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, SongsFactory, 
 		$scope.gameOver = true;
 			$scope.songList = [];
 		    $scope.songs = [];
-		    $scope.round = 0;
+		    $rootScope.round = 0;
 		    $scope.start = true;
 		    $scope.ready = false;
 
@@ -74,7 +75,8 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, SongsFactory, 
      $scope.addSongs = function () {
      	var type = $scope.category.type;
      	$scope.start = false;
-     	$scope.score = 0;
+     	$rootScope.score = 0;
+     	$rootScope.round++;
      	
 
 		SongsFactory.getSongList(type)
@@ -202,15 +204,15 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, SongsFactory, 
 		
 		if (songToGuess === $scope.myGuess){
 			$scope.result = "You are correct!";
-			$scope.score=Math.floor($scope.score + 1 + $scope.songs[$scope.currentSong].remaining);
+			$rootScope.score=Math.floor($rootScope.score + 1 + $scope.songs[$scope.currentSong].remaining);
 			//Math.floor($scope.songs[$scope.currentSong].currentTime)
 			
 		} else {
 			$scope.result = "You are wrong! The correct answer is: " + songToGuess;
 		}
 
-		if ($scope.round<$scope.maxRounds){
-			$scope.round++;
+		if ($rootScope.round<$scope.maxRounds){
+			$rootScope.round++;
 			$scope.guessing = false;
 			$scope.currentSong = getNextSong();
 		}

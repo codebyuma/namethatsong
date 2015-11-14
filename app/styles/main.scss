@@ -11,7 +11,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 }
 
 body {
-  padding: 0;
+  padding-top: 0px;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -24,16 +24,30 @@ body {
 
 /* Custom page header */
 .header {
-  border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 10px;
-
+  //border-bottom: 1px solid #e5e5e5;
+ margin-bottom: 2%;
+  //display: inline;
+  padding-left: 5%;
+  padding-right: 5%;
+  margin-left: 20%;
+  margin-right: 20%;
+  font-family: 'Finger Paint', cursive;
   /* Make the masthead heading the same height as the navigation */
-  h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-    line-height: 40px;
-    padding-bottom: 19px;
-  }
+  // h3 {
+  //   margin-top: 0;
+  //   margin-bottom: 0;
+  //   line-height: 40px;
+  //   padding-bottom: 19px;
+  // }
+  // .title {
+  //   color: #4B0082;
+  // }
+}
+
+.gameStatus {
+  padding-top: 20%;
+  padding-right: 10%;
+  font-family: 'Arial';
 }
 
 /* Custom page footer */
@@ -49,12 +63,20 @@ body {
 
 /* Main marketing message and sign up button */
 .jumbotron {
+  border-radius: 15px;
+  margin-left: 20%;
+  margin-right: 20%;
+  padding-left: 15px;
+  padding-right: 15px;
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-
+  font-size: 30px;
+  // border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 10%;
+  margin-bottom: 10%;
   .btn {
     font-size: 21px;
     padding: 14px 24px;
+    margin-top: 5%;
   }
 }
 
@@ -82,7 +104,7 @@ body {
   }
   /* Space out the masthead */
   .header {
-    margin-bottom: 30px;
+    margin-bottom: 5px;
   }
   /* Remove the bottom border on the jumbotron for visual effect */
   .jumbotron {
