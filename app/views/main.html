@@ -1,5 +1,7 @@
 <div class="row">
     <div class="col-xs-3">
+        {{ data.text }}
+        {{ data.round }}
         <!-- anything typed in here is magically saved to our Firebase database! -->
         <!-- <input type="text" ng-model="data.text"/> -->
         <!-- all changes from our Firebase database magically appear here! -->
@@ -33,7 +35,7 @@
     <div class="row">
         <div class="col-xs-3"></div>
         <div class="col-xs-6">
-            <div>Round {{ round }}:</div>
+            <div>Round {{ data.round }}:</div>
             <button ng-click="songs[currentSong].play();startTimer()" volume="0.5" start="0.2" class="btn btn-info" ng-disabled="guessing">Play</button>
             <button ng-click="buzzIn();stopTimer()" volume="0.5" start="0.2" class="btn btn-success" ng-disabled="guessing">Buzzer!</button>
             <!--     Current Time: {{songs[currentSong].currentTime | trackTime}} -->
@@ -81,6 +83,7 @@
     </div>
 </div>
 <div>
+
     <!-- {{ songList }} -->
 </div>
 <!-- <div ng-show="haveSongs() && !gameOver">

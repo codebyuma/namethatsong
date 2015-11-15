@@ -10,11 +10,21 @@
 angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, SongsFactory, Spotify, ngAudio, $state, $firebaseObject, $firebaseArray, $timeout) {
 
 
-	// var ref = new Firebase("https://incandescent-fire-7627.firebaseio.com");
+	var ref = new Firebase("https://incandescent-fire-7627.firebaseio.com");
 	// // download the data from ref onto a local object. this is an async request
-	// var syncObject = $firebaseObject(ref);
+	var syncObject = $firebaseObject(ref);
 	// // synchronize the object with a three-way data binding. As we update the data object, it syncs it across
-	// syncObject.$bindTo($scope, "data");
+	 syncObject.$bindTo($scope, "data");
+	 $scope.data = {
+	 	text: "test",
+	 	songList: null,
+	 	songs: null,
+	 	start: null,
+	 	round: 0,
+	 	score: 0
+	 }
+
+	 console.log($scope.data);
 
 	// var refTest = new Firebase("https://incandescent-fire-7627.firebaseio.com/tests");
 	// $scope.testArray = $firebaseArray(refTest);
@@ -31,8 +41,8 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
      $scope.start = true;
      $scope.songList = [];
      $scope.songs = [];
-     $rootScope.maxRounds = 4;
-     $rootScope.round = 0;
+     $scope.data.maxRounds = 4;
+     $scope.data.round = 0;
      $rootScope.score = 0;
      $rootScope.gameOver = false;
 
@@ -71,7 +81,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	}
 
 	$scope.timesUp = function (){
-		if ($rootScope.round < $rootScope.maxRounds){
+		if ($scope.data.round < $scope.data.maxRounds){
 			$scope.gameOverMessage = "You're out of time!";
 		}
 		else {
@@ -81,7 +91,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 		$rootScope.gameOver = true;
 			$scope.songList = [];
 		    $scope.songs = [];
-		    $rootScope.round = 0;
+		    $scope.data.round = 0;
 		    $scope.start = true;
 		    $rootScope.ready = false;
 
@@ -90,9 +100,11 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 
      $scope.addSongs = function () {
      	var type = $scope.category.type;
+     	$scope.data.text = type;
+     	console.log("again? ", $scope.data);
      	$scope.start = false;
      	$rootScope.score = 0;
-     	$rootScope.round++;
+     	$scope.data.round++;
      	
 
 		SongsFactory.getSongList(type)
@@ -195,6 +207,8 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 		}
 
 	$scope.startTimer = function () {
+		$scope.data.songList = $scope.songList;
+		console.log("start timer data", $scope.data);
 		console.log("here then", $scope.songs[$scope.currentSong]);
 		$scope.haveResult = false;
 		                $scope.$broadcast('timer-start');
@@ -233,8 +247,8 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 			$scope.answer = "The correct answer is: " + songToGuess;
 		}
 
-		if ($rootScope.round<$rootScope.maxRounds){
-			$rootScope.round++;
+		if ($scope.data.round<$scope.data.maxRounds){
+			$scope.data.round++;
 			$scope.guessing = false;
 			$scope.currentSong = getNextSong();
 		}

@@ -35,18 +35,20 @@
       <h1><a href="#/"><i class="fa fa-music fa-lg"></i> Name That Song!</a></h1>
     </div>
     <div class="col-xs-4">
-      <div class="gameStatus"><div class="pull-right" ng-show="!gameOver && ready">Current score: {{ score }} | Round: {{ round }} of {{ maxRounds }} </div></div></div>
+      <div class="gameStatus"><div class="pull-right" ng-show="!gameOver && ready">Current score: {{ score }} | Round: {{ data.round }} of {{ data.maxRounds }} </div></div></div>
     </div>
     </div>
     <div class="jumbotron">
       <div ng-view="">
       </div>
+
     </div>
 
 
 
     <div class="footer">
       <div class="container">
+
         <p>Made with <span class="glyphicon glyphicon-heart"></span> by Uma Chandran.</p>
       </div>
     </div>
