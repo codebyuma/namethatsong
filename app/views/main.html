@@ -1,14 +1,14 @@
 <div class="row">
-    <div class="col-xs-3">
+    <div class="col-xs-2">
         <!-- anything typed in here is magically saved to our Firebase database! -->
         <!-- <input type="text" ng-model="data.text"/> -->
         <!-- all changes from our Firebase database magically appear here! -->
         <!-- <h1>You said: {{ data.text }}</h1> -->
     </div>
-    <div class="col-xs-6">
+    <div class="col-xs-8">
         <div ng-show="gameOver">
             {{ gameOverMessage }}
-            <br>Final score: {{ score }}.
+            <br>Final score: {{ score }}
         </div>
         <div ng-show="!haveSongs() && start">
             <form role="form" ng-submit="addSongs()">
@@ -25,21 +25,21 @@
             </form>
         </div>
     </div>
-    <div class="col-xs-3">
+    <div class="col-xs-2">
     </div>
     <!-- Todos input -->
 </div>
 
 <div class="play" ng-show="haveSongs() && !gameOver && !ready && haveResult">
     <div class="row">
-        <div class="col-xs-3"></div>
-        <div class="col-xs-6">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
            <div>
                 {{ result }}
                 <br> {{ answer }}
             </div>
         </div>
-        <div class="col-xs-3"></div>
+        <div class="col-xs-2"></div>
     </div>
     <!--     <br>
     guessesssS?   {{ songList[currentSong].guessChoices }} -->
@@ -50,8 +50,8 @@
 
 <div class="play" ng-show="haveSongs() && !gameOver && ready">
     <div class="row">
-        <div class="col-xs-3"></div>
-        <div class="col-xs-6">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
             <div>Round {{ round }}:</div>
             <button ng-click="songs[currentSong].play();startTimer()" volume="0.5" start="0.2" class="btn btn-info" ng-disabled="guessing">Play</button>
             <button ng-click="buzzIn();stopTimer()" volume="0.5" start="0.2" class="btn btn-success" ng-disabled="guessing">Buzzer!</button>
@@ -60,18 +60,18 @@
             <timer interval="1000" countdown="20" finish-callback="timesUp()" autostart="false">Time left: <b>{{countdown}}</b></timer>
             
         </div>
-        <div class="col-xs-3"></div>
+        <div class="col-xs-2"></div>
     </div>
     <!--     <br>
     guessesssS?   {{ songList[currentSong].guessChoices }} -->
 </div>
 <div class="container" ng-show="haveSongs() && !gameOver && guessing">
     <div class="row">
-        <div class="col-xs-3"></div>
-        <div class="col-xs-6">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
             <form role="form" ng-submit="submitGuess()">
-                <div>
-
+               
+                  <br>
 
                 <div data-ng-repeat="choice in songList[currentSong].guessChoices" class="guessInput">
                   <input
@@ -85,15 +85,15 @@
                     <div>
                         <input type="submit" class="btn btn-primary" value="Guess!">
                     </div>
-                </div>
+               
             </form>
         </div>
-        <div class="col-xs-3"></div>
+        <div class="col-xs-2"></div>
     </div>
 </div>
-<div>
+<!-- <div> -->
     <!-- {{ songList }} -->
-</div>
+<!-- </div> -->
 <!-- <div ng-show="haveSongs() && !gameOver">
     <div ng-repeat="theSong in songList">
         {{ theSong.name }} by {{ theSong.artist[0].name }} - {{ theSong.played }}

@@ -63,7 +63,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
         	$scope.gameOver = false;
         	$scope.start = true;
 	        $rootScope.ready = false;
-
+	        $scope.$broadcast('timer-reset');
         }, 2000)
         
 
@@ -172,6 +172,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
     }
 
     $scope.startTimer = function() {
+    	$scope.$broadcast('timer-reset');
         console.log("here then", $scope.songs[$scope.currentSong]);
         $scope.haveResult = false;
         $scope.$broadcast('timer-start');
@@ -181,7 +182,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
 
     $scope.stopTimer = function() {
         $scope.$broadcast('timer-stop');
-
+        $scope.$broadcast('timer-reset');
         $scope.timerRunning = false;
     }
     $scope.myGuess = {};
