@@ -66,7 +66,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 
      	//$scope.myGuess = $scope.songList[$scope.currentSong].guessChoices[0].combinedSongInfo;
 
-     	$scope.myGuess = "Pull down to see options";
+     	//$scope.myGuess = "Pull down to see options";
 		$scope.guessing = true;
 	}
 
@@ -212,9 +212,9 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	  // console.log(Math.floor($scope.songs[$scope.currentSong].currentTime));
 	  // console.log($scope.songs[$scope.currentSong].remaining);
 	}
-
+	$scope.myGuess = {};
 	$scope.submitGuess = function (){
-		console.log("my guess: ", $scope.myGuess);
+		//console.log("my guess: ", $scope.myGuess.guess);
 		$scope.$broadcast('timer-reset');
 		$scope.haveResult = false;
 		$scope.result = "";
@@ -222,7 +222,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 		$scope.songList[$scope.currentSong].played = true;
 		$scope.haveResult = true;
 		
-		if (songToGuess === $scope.myGuess){
+		if (songToGuess === $scope.myGuess.guess){
 			$scope.result = "You are correct!";
 			$scope.answer = "The answer is: " + songToGuess;
 			$rootScope.score=Math.floor($rootScope.score + 1 + $scope.songs[$scope.currentSong].remaining);

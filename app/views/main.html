@@ -52,14 +52,24 @@
 <div class="container" ng-show="haveSongs() && !gameOver && guessing">
     <div class="row">
         <div class="col-xs-3"></div>
-        <div class="col-xs-6 guessForm">
+        <div class="col-xs-6">
             <form role="form" ng-submit="submitGuess()">
                 <div class="input-group">
-                    <select class="gameForm" name="song" ng-options="choice.combinedSongInfo as choice.combinedSongInfo for choice in songList[currentSong].guessChoices" ng-model="myGuess" required>
-                    </select>
+                   <!--  <select class="gameForm" name="song" ng-options="choice.combinedSongInfo as choice.combinedSongInfo for choice in songList[currentSong].guessChoices" ng-model="myGuess" required>
+                    </select> -->
                     <!--  <div ng-repeat="choice in songList[currentSong].guessChoices">
                   <input type="radio" ng-model="myGuess.choice" value="{{choice.combinedSongInfo}}">{{choice.combinedSongInfo}}
                 </div> -->
+
+
+                <div data-ng-repeat="choice in songList[currentSong].guessChoices" class="guessInput">
+                  <input
+                      name="guessChoice"
+                      type="radio"
+                      value="{{choice.combinedSongInfo}}"
+                      ng-model="myGuess.guess" />
+                      {{choice.combinedSongInfo}}
+                </div>
                     <br>
                     <div>
                         <input type="submit" class="btn btn-primary" value="Guess!">
