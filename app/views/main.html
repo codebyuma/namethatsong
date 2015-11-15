@@ -44,10 +44,12 @@
         {{ answer }}
       </div>
 
-<!--     <br>
-    guessesssS?   {{ songList[currentSong].guessChoices }} -->
 
 </div>
+
+    <br>
+    guessesssS?   {{ songList }}
+
 
 <div class="container" ng-show="haveSongs() && !gameOver && guessing">
     <form role="form" ng-submit="submitGuess()">

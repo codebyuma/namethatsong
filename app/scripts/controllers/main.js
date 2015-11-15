@@ -16,8 +16,8 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	// // synchronize the object with a three-way data binding. As we update the data object, it syncs it across
 	// syncObject.$bindTo($scope, "data");
 
-	// var refTest = new Firebase("https://incandescent-fire-7627.firebaseio.com/tests");
-	// $scope.testArray = $firebaseArray(refTest);
+	var refSongs = new Firebase("https://incandescent-fire-7627.firebaseio.com/songs");
+	$scope.songList = $firebaseArray(refSongs);
 
 
 
@@ -27,7 +27,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
      $scope.sound;
 
      $scope.start = true;
-     $scope.songList = [];
+     //$scope.songList = [];
      $scope.songs = [];
      $rootScope.maxRounds = 4;
      $rootScope.round = 0;
@@ -37,6 +37,8 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
      $scope.guessing = false;
      $rootScope.ready = false;
      $scope.haveResult = false;
+
+     $scope.localTempSongList = [];
 
 
 
@@ -93,25 +95,34 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 
 			songs.items.forEach(function (song){
 				if (song){
-					if (song.track.preview_url != null && song.track.artists[0].name!="Various Artists"){
-						$scope.songList.push({
+					if (song.track.preview_url != null && song.track.artists[0].name!="Various Artists"){ // don't add songs without a preview file or if the artist name is 'various artists'
+						$scope.localTempSongList.push({
 							name: song.track.name,
 							artist: mergeArtists(song.track.artists),
 							combinedSongInfo: song.track.name + " by " + mergeArtists(song.track.artists),
 							artist_id: song.track.artists[0].uri.split(":")[2],
 							played: false
-						});
-						console.log("song.track.name", song.track.name);
-						console.log("url", song.track.preview_url);
-						$scope.songs.push(ngAudio.load(song.track.preview_url));
+						})
+							$scope.songs.push(ngAudio.load(song.track.preview_url));
+							
+						// console.log("song.track.name", song.track.name);
+						// console.log("url", song.track.preview_url);
+						
 					}
 				}
 			})
-
-			 $rootScope.gameOver = false;
-			 $scope.guessing = false;
-			 $scope.currentSong = getNextSong();
-			 $scope.loadGuessOptions();
+			// $scope.songList.$watch(function(event){
+			// 	console.log("event!", event);
+			// 	console.log("scope length", $scope.songList.length);
+			// 	if ($scope.songList.length === 29){
+					$rootScope.gameOver = false;
+					 $scope.guessing = false;
+					 $scope.loadGuessOptions();
+					
+			// 	}
+			// })
+			 
+			 
 			 //$scope.testArray.$add({text: "woooo"});
 
 		})
@@ -134,7 +145,9 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 
 	$scope.loadGuessOptions = function() {
 		var count = $scope.songList.length;
-	    $scope.songList.forEach(function(song) {
+		console.log("THIS?");
+	    $scope.localTempSongList.forEach(function(song) {
+	    	var id = song.key;
 	    	song.guessChoices = [{
 	    		artist: song.artist,
 	    		song: song.name,
@@ -153,6 +166,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	            				song: relatedSong,
 	            				combinedSongInfo: relatedSong + " by " + artist.name
 	            			})
+	            			//$scope.songList.$save(song)
 	            			
 	            		})
 	            	})
@@ -160,8 +174,17 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	         if (count > 1){
 	         	count--;
 	         } else {
+	         	for (var i=0; i<$scope.localTempSongList.length; i++){
+	         		$scope.songList.$add($scope.localTempSongList[i]);
 
-	         	$rootScope.ready = true;
+	         	}
+	         	$scope.songList.$watch(function(event){
+			
+				if ($scope.songList.length === 29){
+	         		$rootScope.ready = true;
+	         		 $scope.currentSong = getNextSong();
+	         		}
+	         	})
 	         }
 	    })
 	}
