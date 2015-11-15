@@ -22,7 +22,9 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 
 
   $scope.categoryOptions = SongsFactory.getCategories();
-
+  // $scope.category = {
+  // 	type: $scope.categoryOptions[0].type
+  // }
 
      $scope.sound;
 
