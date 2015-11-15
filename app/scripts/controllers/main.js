@@ -19,7 +19,11 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	var refSongs = new Firebase("https://incandescent-fire-7627.firebaseio.com/songs");
 	$scope.songList = $firebaseArray(refSongs);
 
-
+	var refGameObj = new Firebase("https://incandescent-fire-7627.firebaseio.com");
+	var gameData = $firebaseObject(refGameObj);
+	gameData.$bindTo($scope, 'gameObj');
+	
+	
 
   $scope.categoryOptions = SongsFactory.getCategories();
 
@@ -182,6 +186,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 			
 				if ($scope.songList.length === 29){
 	         		$rootScope.ready = true;
+	         		$scope.gameObj.text="BOOOO"
 	         		 $scope.currentSong = getNextSong();
 	         		}
 	         	})
