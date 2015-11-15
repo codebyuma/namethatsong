@@ -29,6 +29,25 @@
     </div>
     <!-- Todos input -->
 </div>
+
+<div class="play" ng-show="haveSongs() && !gameOver && !ready && haveResult">
+    <div class="row">
+        <div class="col-xs-3"></div>
+        <div class="col-xs-6">
+           <div>
+                {{ result }}
+                <br> {{ answer }}
+            </div>
+        </div>
+        <div class="col-xs-3"></div>
+    </div>
+    <!--     <br>
+    guessesssS?   {{ songList[currentSong].guessChoices }} -->
+</div>
+
+
+
+
 <div class="play" ng-show="haveSongs() && !gameOver && ready">
     <div class="row">
         <div class="col-xs-3"></div>
@@ -39,10 +58,7 @@
             <!--     Current Time: {{songs[currentSong].currentTime | trackTime}} -->
             <br>
             <timer interval="1000" countdown="20" finish-callback="timesUp()" autostart="false">Time left: <b>{{countdown}}</b></timer>
-            <div ng-show="haveResult">
-                {{ result }}
-                <br> {{ answer }}
-            </div>
+            
         </div>
         <div class="col-xs-3"></div>
     </div>
@@ -54,12 +70,7 @@
         <div class="col-xs-3"></div>
         <div class="col-xs-6">
             <form role="form" ng-submit="submitGuess()">
-                <div class="input-group">
-                   <!--  <select class="gameForm" name="song" ng-options="choice.combinedSongInfo as choice.combinedSongInfo for choice in songList[currentSong].guessChoices" ng-model="myGuess" required>
-                    </select> -->
-                    <!--  <div ng-repeat="choice in songList[currentSong].guessChoices">
-                  <input type="radio" ng-model="myGuess.choice" value="{{choice.combinedSongInfo}}">{{choice.combinedSongInfo}}
-                </div> -->
+                <div>
 
 
                 <div data-ng-repeat="choice in songList[currentSong].guessChoices" class="guessInput">

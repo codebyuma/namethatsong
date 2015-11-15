@@ -234,17 +234,25 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 		}
 
 		if ($rootScope.round<$rootScope.maxRounds){
-			$rootScope.round++;
 			$scope.guessing = false;
-			$scope.currentSong = getNextSong();
+			$rootScope.round++;
+			$scope.ready = false;
+
+			$timeout(function() {
+    			
+				$scope.ready = true;
+				$scope.currentSong = getNextSong();
+				
+            }, 3000);
+			
 		}
 		else {
 			
-			
-			$scope.songs[$scope.currentSong].pause();
+
+            $timeout(function() {
+            				$scope.songs[$scope.currentSong].pause();
 
 			$scope.guessing = false;
-            $timeout(function() {
     			$scope.timesUp();
 			    $scope.haveResult = false;
 				$scope.result = "";
