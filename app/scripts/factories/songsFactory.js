@@ -6,7 +6,7 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 	// $http.defaults.headers.common['Authorization'] = 'Bearer BQAKZ_BPTtzT2f3gs1Pa47R1NdPjKVDg0ebNPcY63aarTqIkQ7EnDbPFKIkoFU0D1WQ7XpdgiR1yhXrK6ELvsNwm_Gya3pGa8Gs4WmzfFoofIy40QIVn_c4FqRMrEvyKG6n6pQA';
 
 
-	$http.defaults.headers.common.Authorization = 'Bearer BQCGimrL92u9UFOhn64zC5bzmPuN0j30fFITItFCO3OQde2EMqIfo3eS2ser1v0LJNqHRVDQjGgQmW5HTkuwdmWTJcIb8BqP3HJs3u4Z6QjEWy4qenH9LiVT-6aisMwPSgneOKc';
+	$http.defaults.headers.common.Authorization = 'Bearer BQCe1Id96KUg1BtpyYtbmIN93OmZmM9DRRjR5r43xwM6_KJXsnwYQ8mxtp5V04TadJGhrI1LF5UIf9j_eXAX3_OF8K8_9nZMnZYSHxxzQXhqJKrTuSk8H3nBO6Qk0K60NKbLGbM';
 
 	var playlistOptions = {
 		"Current Top 40": {user: 'spotify', kind: 'playlist', id: '5FJXhjdILmRA2z5bvz4nzf'},

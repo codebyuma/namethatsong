@@ -63,8 +63,10 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
      	$scope.songList.forEach(function(song){
      		song.guessChoices=shuffleArray(song.guessChoices);
      	})
-     	$scope.myGuess = $scope.songList[$scope.currentSong].guessChoices[0].combinedSongInfo;
-	         	console.log("my guess value", $scope.myGuess);
+
+     	//$scope.myGuess = $scope.songList[$scope.currentSong].guessChoices[0].combinedSongInfo;
+
+     	$scope.myGuess = "Pull down to see options";
 		$scope.guessing = true;
 	}
 
@@ -106,8 +108,8 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 							artist_id: song.track.artists[0].uri.split(":")[2],
 							played: false
 						});
-						console.log("song.track.name", song.track.name);
-						console.log("url", song.track.preview_url);
+						// console.log("song.track.name", song.track.name);
+						// console.log("url", song.track.preview_url);
 						$scope.songs.push(ngAudio.load(song.track.preview_url));
 					}
 				}
@@ -165,8 +167,9 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	         if (count > 1){
 	         	count--;
 	         } else {
-
-	         	$rootScope.ready = true;
+	         	$timeout(function() {
+    				$rootScope.ready = true;
+            	}, 1000);
 
 	         }
 	    })
@@ -192,6 +195,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 		}
 
 	$scope.startTimer = function () {
+		console.log("here then", $scope.songs[$scope.currentSong]);
 		$scope.haveResult = false;
 		                $scope.$broadcast('timer-start');
                 $scope.timerRunning = true;
@@ -238,19 +242,13 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 			
 			
 			$scope.songs[$scope.currentSong].pause();
-		// $rootScope.gameOver = true;
-		// 	$scope.songList = [];
-		//     $scope.songs = [];
-		//     $rootScope.round = 0;
-		//     $scope.start = true;
-		//     $rootScope.ready = false;*/
 
-
+			$scope.guessing = false;
             $timeout(function() {
     			$scope.timesUp();
 			    $scope.haveResult = false;
 				$scope.result = "";
-				$scope.guessing = false;
+				
             }, 2000);
 
 		}
