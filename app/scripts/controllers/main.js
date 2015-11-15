@@ -306,11 +306,25 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 			$scope.songs[$scope.currentSong].pause();
 
 			$scope.guessing = false;
+			var removalCounter = $scope.songList.length;
             $timeout(function() {
-    			$scope.timesUp();
-			    $scope.haveResult = false;
-				$scope.result = "";
-				
+    			
+				$scope.songList.forEach(function (song){
+					$scope.songList.$remove(song)
+					.then (function (removed){
+						console.log("REMOVED? ", removed);
+						console.log("removal counter", removalCounter);
+						if (removalCounter === 1)
+						{
+							$scope.timesUp();
+										    $scope.haveResult = false;
+											$scope.result = "";
+						}	
+						else {
+							removalCounter--;
+						}
+				})
+				})
             }, 2000);
 
 		}
