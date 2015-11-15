@@ -7,7 +7,7 @@
  * # MainCtrl
  * Controller of the ntsApp
  */
-angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, SongsFactory, Spotify, ngAudio, $state, $firebaseObject, $firebaseArray, $timeout) {
+angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, SongsFactory, Spotify, ngAudio, $state, $firebaseObject, $firebaseArray, $timeout, $firebaseUtils) {
 
 
 	// var ref = new Firebase("https://incandescent-fire-7627.firebaseio.com");
@@ -21,8 +21,26 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 
 	var refGameObj = new Firebase("https://incandescent-fire-7627.firebaseio.com");
 	var gameData = $firebaseObject(refGameObj);
-	gameData.$bindTo($scope, 'gameObj');
 	
+	// $firebaseUtils.updateRec(gameData, "START"); 
+	gameData.text = "TEST";
+	gameData.$save();
+	$scope.gameObj = gameData;
+
+  //   $timeout(function() {
+		// gameData.text = "123";
+		// gameData.$save();;
+  //   }, 2000);
+	
+
+
+	// gameData.$bindTo($scope, 'gameObj');
+	// $scope.gameObj = {
+	// 	text: "START"
+	// }
+	// gameData.$save();
+
+
 	
 
   $scope.categoryOptions = SongsFactory.getCategories();
@@ -186,7 +204,11 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 			
 				if ($scope.songList.length === 29){
 	         		$rootScope.ready = true;
-	         		$scope.gameObj.text="BOOOO"
+	         		
+	         		gameData.text = "Boooooo";
+					gameData.$save();;
+
+
 	         		 $scope.currentSong = getNextSong();
 	         		}
 	         	})
