@@ -6,12 +6,11 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 	// $http.defaults.headers.common['Authorization'] = 'Bearer BQAKZ_BPTtzT2f3gs1Pa47R1NdPjKVDg0ebNPcY63aarTqIkQ7EnDbPFKIkoFU0D1WQ7XpdgiR1yhXrK6ELvsNwm_Gya3pGa8Gs4WmzfFoofIy40QIVn_c4FqRMrEvyKG6n6pQA';
 
 
-	$http.defaults.headers.common.Authorization = 'Bearer BQCcgCR8Zc0igabY-bVPkpzeGZP7PZD7n5zyVxkVrBtlL7muwbIONhLXpiT6UPq_mxD9mnuog4VhfydDfQ0uoGSKlHjG6PM3EVbuawXhZgnObOB16-F21kPv4Oyh6WA4LlTjmhE';
+	$http.defaults.headers.common.Authorization = 'Bearer BQDrH3u8iWwAOyrDWF1IGlKi1hw1aYxA2QUd4ZeVvHan3ocN5HV2KXt49lGcxGgiV8lnYiDPhjxe7zc-_wdkuO50qyqOPglfqaM_gVUoq03jF5Xpn0gHTuAbzwIEoZ8tRhhvJsM';
 
 	var playlistOptions = {
 		"Current Top 40": {user: 'spotify', kind: 'playlist', id: '5FJXhjdILmRA2z5bvz4nzf'},
 		"Hip Hop Throwbacks": {user: 'spotify', kind: 'playlist', id: '4jONxQje1Fmw9AFHT7bCp8'},
-		"Pop": {user: 'hyperswift', type: 'pop', id: '4kOhdyUN3MzFlPkREE9mm7'},
 		"Rock Solid Hits": {user: 'spotify', kind: 'playlist', id: '0JHYU9yefyVvlYAi2WTdKc'},
 	    "90s R&B": {user: 'spotify', kind: 'playlist', id: '7t5PfPV1MdYnpmGPxwv5Ef'},
 	    "Blues": {user: 'sonymusicthelegacy', kind: 'playlist', id: '57zcG5rzNtI8DYrUz0nVsP'},
@@ -29,12 +28,12 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 	SongsFactory.getSongList = function (type){
 		// console.log('in get song list');
 		var url;
-		if (playlistOptions[type].kind === "playlist"){
-			 url = 'https://api.spotify.com/v1/users/' + playlistOptions[type].user + '/playlists/' + playlistOptions[type].id + '/tracks?market=US&limit=20'
-		} else {
-			url = 'https://api.spotify.com/v1/artists/' + playlistOptions[type].id +  '/top-tracks?country=US';
+		// if (playlistOptions[type].kind === "playlist"){
+			 url = 'https://api.spotify.com/v1/users/' + playlistOptions[type].user + '/playlists/' + playlistOptions[type].id + '/tracks?market=US&limit=30'
+		// } else {
+		// 	url = 'https://api.spotify.com/v1/artists/' + playlistOptions[type].id +  '/top-tracks?country=US';
 
-		}
+		// }
 
 		return $http.get(url)
 		.then (function(response){
@@ -64,6 +63,8 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 
 		return $http.get(relatedSongsUrl)
 		.then (function (response){
+			if (response.data.tracks.length === 0)
+				return "";
 			return response.data.tracks[0].name;
 		}, function (error){
 			return "Error getting related song";

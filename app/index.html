@@ -35,7 +35,7 @@
       <h1><i class="fa fa-music fa-lg"></i> Name That Song!</h1>
     </div>
     <div class="col-xs-4">
-      <div class="gameStatus"><div class="pull-right">Current round: {{ round }}     |     Current score: {{ score }}</div></div></div>
+      <div class="gameStatus"><div class="pull-right" ng-show="!gameOver && ready">Current score: {{ score }} | Round: {{ round }} of {{ maxRounds }} </div></div></div>
     </div>
     </div>
     <div class="jumbotron">

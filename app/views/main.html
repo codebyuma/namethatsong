@@ -9,7 +9,8 @@
     </div>
     <div class="col-xs-4">
       <div ng-show="gameOver">
-        GAME OVER! Your final score is {{ score }}.
+        {{ gameOverMessage }}
+        <br>Final score: {{ score }}.
     </div>
       <div ng-show="!haveSongs() && start">
           <form role="form" ng-submit="addSongs()">
@@ -32,14 +33,15 @@
     <!-- Todos input -->
 </div>
 <div class="play" ng-show="haveSongs() && !gameOver && ready">
-
-    <button ng-click="songs[currentSong].play();startTimer()" volume="0.5" start="0.2" class="btn btn-info">Start</button>
-    <button ng-click="buzzIn();stopTimer()" volume="0.5" start="0.2" class="btn btn-success">Buzzer!</button>
+    <div>Round {{ round }}:</div>
+    <button ng-click="songs[currentSong].play();startTimer()" volume="0.5" start="0.2" class="btn btn-info" ng-disabled="guessing">Play</button>
+    <button ng-click="buzzIn();stopTimer()" volume="0.5" start="0.2" class="btn btn-success" ng-disabled="guessing">Buzzer!</button>
 <!--     Current Time: {{songs[currentSong].currentTime | trackTime}} -->
     <br>
-    <timer interval="1000" countdown="30" finish-callback="timesUp()" autostart="false">Time left: <b>{{countdown}}</b></timer>
-    <div class="haveResult">
-        {{ result }}
+    <timer interval="1000" countdown="21" finish-callback="timesUp()" autostart="false">Time left: <b>{{countdown}}</b></timer>
+    <div ng-show="haveResult">
+        {{ result }}<br>
+        {{ answer }}
       </div>
 
 <!--     <br>
@@ -50,13 +52,23 @@
 <div class="container" ng-show="haveSongs() && !gameOver && guessing">
     <form role="form" ng-submit="submitGuess()">
         <div class="row">
+          <div class="col-xs-4"></div>
+          <div class="col-xs-4">
             <div class="input-group">
-                <select class="form-control" name="song" ng-options="choice.combinedSongInfo as choice.combinedSongInfo for choice in songList[currentSong].guessChoices" ng-model="myGuess" required></select>
+                <select class="form-control" name="song" ng-options="choice.combinedSongInfo as choice.combinedSongInfo for choice in songList[currentSong].guessChoices" ng-model="myGuess" required>
+                </select>
 
-                      <span class="input-group-btn">
+               <!--  <div ng-repeat="choice in songList[currentSong].guessChoices">
+                  <input type="radio" ng-model="myGuess.choice" value="{{choice.combinedSongInfo}}">{{choice.combinedSongInfo}}
+                </div> -->
+
+                <br>
+                <div>
                   <input type="submit" class="btn btn-primary" value="Guess!">
-                </span>
+                </div>
             </div>
+          </div>
+          <div class="col-xs-4"></div>
         </div>
     </form>
 </div>

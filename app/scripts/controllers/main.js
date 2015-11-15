@@ -29,13 +29,13 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
      $scope.start = true;
      $scope.songList = [];
      $scope.songs = [];
-     $scope.maxRounds = 4;
+     $rootScope.maxRounds = 4;
      $rootScope.round = 0;
      $rootScope.score = 0;
-     $scope.gameOver = false;
+     $rootScope.gameOver = false;
 
      $scope.guessing = false;
-     $scope.ready = false;
+     $rootScope.ready = false;
      $scope.haveResult = false;
 
 
@@ -43,11 +43,13 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 
      function getNextSong() {
 
-		var num = Math.floor((Math.random() * $scope.songList.length-1));
+		var num = Math.floor(Math.random() * ($scope.songList.length-1));
 		console.log("is played?", $scope.songList[num])
+		console.log("NUM", num);
 		while ($scope.songList && $scope.songList[num].played){
 			console.log("is played 2?", $scope.songList[num])
-			num = Math.floor((Math.random() * $scope.songList.length-1));
+			num = Math.floor(Math.random() * ($scope.songList.length-1));
+			console.log("NUM", num);
 		}
 		return num;
 	}
@@ -62,12 +64,19 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	}
 
 	$scope.timesUp = function (){
-		$scope.gameOver = true;
+		if ($rootScope.round < $rootScope.maxRounds){
+			$scope.gameOverMessage = "You're out of time!";
+		}
+		else {
+			$scope.gameOverMessage = "Game over!";
+		}
+		$scope.songs[$scope.currentSong].pause();
+		$rootScope.gameOver = true;
 			$scope.songList = [];
 		    $scope.songs = [];
 		    $rootScope.round = 0;
 		    $scope.start = true;
-		    $scope.ready = false;
+		    $rootScope.ready = false;
 
 
 	}
@@ -84,7 +93,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 
 			songs.items.forEach(function (song){
 				if (song){
-					if (song.track.preview_url != null){
+					if (song.track.preview_url != null && song.track.artists[0].name!="Various Artists"){
 						$scope.songList.push({
 							name: song.track.name,
 							artist: mergeArtists(song.track.artists),
@@ -99,7 +108,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 				}
 			})
 
-			 $scope.gameOver = false;
+			 $rootScope.gameOver = false;
 			 $scope.guessing = false;
 			 $scope.currentSong = getNextSong();
 			 $scope.loadGuessOptions();
@@ -152,7 +161,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	         	count--;
 	         } else {
 
-	         	$scope.ready = true;
+	         	$rootScope.ready = true;
 	         }
 	    })
 	}
@@ -177,7 +186,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 		}
 
 	$scope.startTimer = function () {
-		
+		$scope.haveResult = false;
 		                $scope.$broadcast('timer-start');
                 $scope.timerRunning = true;
   		//document.getElementsByTagName('timer')[0].start();
@@ -195,6 +204,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	}
 
 	$scope.submitGuess = function (){
+		console.log("my guess: ", $scope.myGuess);
 		$scope.$broadcast('timer-reset');
 		$scope.haveResult = false;
 		$scope.result = "";
@@ -204,25 +214,37 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 		
 		if (songToGuess === $scope.myGuess){
 			$scope.result = "You are correct!";
+			$scope.answer = "The answer is: " + songToGuess;
 			$rootScope.score=Math.floor($rootScope.score + 1 + $scope.songs[$scope.currentSong].remaining);
 			//Math.floor($scope.songs[$scope.currentSong].currentTime)
 			
 		} else {
-			$scope.result = "You are wrong! The correct answer is: " + songToGuess;
+			$scope.result = "You are wrong!";
+			$scope.answer = "The correct answer is: " + songToGuess;
 		}
 
-		if ($rootScope.round<$scope.maxRounds){
+		if ($rootScope.round<$rootScope.maxRounds){
 			$rootScope.round++;
 			$scope.guessing = false;
 			$scope.currentSong = getNextSong();
 		}
 		else {
-			$scope.guessing = false;
+			
+			
+			$scope.songs[$scope.currentSong].pause();
+		// $rootScope.gameOver = true;
+		// 	$scope.songList = [];
+		//     $scope.songs = [];
+		//     $rootScope.round = 0;
+		//     $scope.start = true;
+		//     $rootScope.ready = false;*/
+
 
             $timeout(function() {
     			$scope.timesUp();
 			    $scope.haveResult = false;
 				$scope.result = "";
+				$scope.guessing = false;
             }, 2000);
 
 		}
