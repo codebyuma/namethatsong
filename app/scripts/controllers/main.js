@@ -19,13 +19,13 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	var refSongs = new Firebase("https://incandescent-fire-7627.firebaseio.com/songs");
 	$scope.songList = $firebaseArray(refSongs);
 
-	var refGameObj = new Firebase("https://incandescent-fire-7627.firebaseio.com");
-	var gameData = $firebaseObject(refGameObj);
+	// var refGameObj = new Firebase("https://incandescent-fire-7627.firebaseio.com");
+	// var gameData = $firebaseObject(refGameObj);
 	
 	// $firebaseUtils.updateRec(gameData, "START"); 
-	gameData.text = "TEST";
-	gameData.$save();
-	$scope.gameObj = gameData;
+	// gameData.text = "TEST";
+	// gameData.$save();
+	// $scope.gameObj = gameData;
 
   //   $timeout(function() {
 		// gameData.text = "123";
@@ -67,20 +67,25 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 
      function getNextSong() {
 
-		var num = Math.floor(Math.random() * ($scope.songList.length-1));
-		console.log("is played?", $scope.songList[num])
+		var num = Math.floor(Math.random() * ($scope.localTempSongList.length-1));
+		console.log("is played?", $scope.localTempSongList[num])
 		console.log("NUM", num);
-		while ($scope.songList && $scope.songList[num].played){
-			console.log("is played 2?", $scope.songList[num])
-			num = Math.floor(Math.random() * ($scope.songList.length-1));
+		while ($scope.localTempSongList && $scope.localTempSongList[num].played){
+			console.log("is played 2?", $scope.localTempSongList[num])
+			num = Math.floor(Math.random() * ($scope.localTempSongList.length-1));
 			console.log("NUM", num);
 		}
 		return num;
 	}
 
 	$scope.buzzIn = function (){
+		console.log("in buzz in: ", $scope.songs);
+     	console.log("in buzz in: ", $scope.songs.length);
+     	console.log("in buzz in: ", $scope.currentSong);
 		$scope.songs[$scope.currentSong].pause();
      	// SHUFFLE
+     	
+
      	$scope.songList.forEach(function(song){
      		song.guessChoices=shuffleArray(song.guessChoices);
      	})
@@ -111,6 +116,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
      	$rootScope.score = 0;
      	$rootScope.round++;
      	
+     	console.log("checking songList", $scope.songList.length);
 
 		SongsFactory.getSongList(type)
 		.then (function (songs){
@@ -137,8 +143,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 			// 	console.log("event!", event);
 			// 	console.log("scope length", $scope.songList.length);
 			// 	if ($scope.songList.length === 29){
-					$rootScope.gameOver = false;
-					 $scope.guessing = false;
+					
 					 $scope.loadGuessOptions();
 					
 			// 	}
@@ -166,7 +171,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	}
 
 	$scope.loadGuessOptions = function() {
-		var count = $scope.songList.length;
+		var count = ($scope.localTempSongList.length)*3;
 		console.log("THIS?");
 	    $scope.localTempSongList.forEach(function(song) {
 	    	var id = song.key;
@@ -177,42 +182,50 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	    	}];
 	        SongsFactory.getRelatedArtists(song.artist_id)
 	            .then(function(_artists) {
+	            	console.log("have related artists", _artists);
 	            	if (_artists.length<3){
 	            		song.played = true;
 	            	} 
 	            	_artists.forEach(function(artist){
 	            		SongsFactory.getRelatedSongs(artist.uri.split(":")[2])
 	            		.then (function (relatedSong){
+	            			console.log("one related song", relatedSong);
 	            			song.guessChoices.push({
 	            				artist: artist.name,
 	            				song: relatedSong,
 	            				combinedSongInfo: relatedSong + " by " + artist.name
-	            			})
+	            			});
+	            			count--;
+	            			if (count <=1){
+					         	for (var i=0; i<$scope.localTempSongList.length; i++){
+					         		$scope.songList.$add($scope.localTempSongList[i]);
+
+					         	}
+					         	$scope.songList.$watch(function(event){
+							
+								if ($scope.songList.length === 29){
+					         		$rootScope.ready = true;
+					         		$rootScope.gameOver = false;
+									 $scope.guessing = false;
+					         		
+					    //      		gameData.text = "Boooooo";
+									// gameData.$save();;
+
+
+					         		 $scope.currentSong = getNextSong();
+					         		}
+					         	})
+	         
+	     						}
+
+
 	            			//$scope.songList.$save(song)
 	            			
 	            		})
 	            	})
 	            })
-	         if (count > 1){
-	         	count--;
-	         } else {
-	         	for (var i=0; i<$scope.localTempSongList.length; i++){
-	         		$scope.songList.$add($scope.localTempSongList[i]);
 
-	         	}
-	         	$scope.songList.$watch(function(event){
-			
-				if ($scope.songList.length === 29){
-	         		$rootScope.ready = true;
-	         		
-	         		gameData.text = "Boooooo";
-					gameData.$save();;
-
-
-	         		 $scope.currentSong = getNextSong();
-	         		}
-	         	})
-	         }
+	         
 	    })
 	}
 
@@ -236,6 +249,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 		}
 
 	$scope.startTimer = function () {
+		console.log("start timer", $scope.songs[$scope.currentSong]);
 		$scope.haveResult = false;
 		                $scope.$broadcast('timer-start');
                 $scope.timerRunning = true;
