@@ -56,10 +56,13 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 
 	$scope.buzzIn = function (){
 		$scope.songs[$scope.currentSong].pause();
+
      	// SHUFFLE
      	$scope.songList.forEach(function(song){
      		song.guessChoices=shuffleArray(song.guessChoices);
      	})
+     	$scope.myGuess = $scope.songList[$scope.currentSong].guessChoices[0].combinedSongInfo;
+	         	console.log("my guess value", $scope.myGuess);
 		$scope.guessing = true;
 	}
 
@@ -162,6 +165,7 @@ angular.module('ntsApp').controller('MainCtrl', function ($scope, $rootScope, So
 	         } else {
 
 	         	$rootScope.ready = true;
+
 	         }
 	    })
 	}
