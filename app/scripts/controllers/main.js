@@ -26,6 +26,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
     $scope.guessing = false;
     $rootScope.ready = false;
     $scope.haveResult = false;
+    $scope.correct = false;
 
     function getNextSong() {
 
@@ -172,6 +173,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
     }
 
     $scope.startTimer = function() {
+    	$scope.correct = true;
     	$scope.$broadcast('timer-reset');
         console.log("here then", $scope.songs[$scope.currentSong]);
         $scope.haveResult = false;
@@ -196,13 +198,15 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
         $scope.haveResult = true;
 
         if (songToGuess === $scope.myGuess.guess) {
-            $scope.result = "You are correct!";
+        	$scope.correct = true;
+            $scope.result = "Woo! You are correct!";
             $scope.answer = "The answer is: " + songToGuess;
             $rootScope.score = Math.floor($rootScope.score + 1 + $scope.songs[$scope.currentSong].remaining);
             //Math.floor($scope.songs[$scope.currentSong].currentTime)
 
         } else {
-            $scope.result = "You are wrong!";
+        	$scope.correct = false;
+            $scope.result = "Doh! That's wrong.";
             $scope.answer = "The correct answer is: " + songToGuess;
         }
 
