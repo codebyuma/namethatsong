@@ -54,7 +54,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
         	console.log("scope wins", $scope.wins)
        		if ($scope.wins === $rootScope.maxRounds){
        			$scope.winner = true;
-       			$scope.gameOverMessage = "Congratulations! You got a perfect score.";
+       			$scope.gameOverMessage = "Congratulations superstar! You won all " + $scope.maxRounds + " rounds!";
        		} else {
        			$scope.gameOverMessage = "Game over!";
        		}
@@ -67,11 +67,11 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
         	$scope.songList = [];
        		 $scope.songs = [];
         	$rootScope.round = 0;
-        	$scope.gameOver = false;
+        	$rootScope.gameOver = false;
         	$scope.start = true;
 	        $rootScope.ready = false;
 	        $scope.$broadcast('timer-reset');
-        }, 2000)
+        }, 3000)
         
 
 

@@ -6,11 +6,13 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 	// $http.defaults.headers.common['Authorization'] = 'Bearer BQAKZ_BPTtzT2f3gs1Pa47R1NdPjKVDg0ebNPcY63aarTqIkQ7EnDbPFKIkoFU0D1WQ7XpdgiR1yhXrK6ELvsNwm_Gya3pGa8Gs4WmzfFoofIy40QIVn_c4FqRMrEvyKG6n6pQA';
 
 
-	$http.defaults.headers.common.Authorization = 'Bearer BQC5rhFQpYH0e8VcXeL9Mo9yLoUUeuf_h7kOZrB_reCSiD1QuHE9MCW7pvEXuEUuopNxSxz1ZRvTKbybopmtgxJvvmqq5YlUyfrOfI55sOkEgV60mnct7A9mYW6uCJ7f4zBY0ps';
+	$http.defaults.headers.common.Authorization = 'Bearer BQBXrOhwBGZzgR-djNSj3_6RgLbELroddV7_FOW6Evv2FZ2X3-visk985hskPypJy3iFCYLLCblPykHHaPnWkac0fuCeTE6nxh6STkYDuxiaBV1NUvfFwXPDX2jIRzUdxAE2CVg';
 
 	var playlistOptions = {
 		"Current Top 40": {user: 'spotify', kind: 'playlist', id: '5FJXhjdILmRA2z5bvz4nzf'},
+		"2015-2015 - Decade of Hits": {user: 'spotify', kind: 'playlist', id: '6nkmrRQv3EV5uRIbswshSm'},
 		"Hip Hop Throwbacks": {user: 'spotify', kind: 'playlist', id: '4jONxQje1Fmw9AFHT7bCp8'},
+		"Motown Hits":  {user: 'classicmotownrecords', kind: 'playlist', id: '1VfFbVXZ9kq7yl7wPkgnp2'},
 		"Rock Solid Hits": {user: 'spotify', kind: 'playlist', id: '0JHYU9yefyVvlYAi2WTdKc'},
 	    "90s R&B": {user: 'spotify', kind: 'playlist', id: '7t5PfPV1MdYnpmGPxwv5Ef'},
 	    "Blues": {user: 'sonymusicthelegacy', kind: 'playlist', id: '57zcG5rzNtI8DYrUz0nVsP'},
@@ -18,6 +20,7 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 	    "Hits - 90's": {user: 'spotify', kind: 'playlist', id: '2uAichKSjJSyrmal8Kb3W9'},
 	    "Hits - 80's": {user: 'spotify', kind: 'playlist', id: '5wDvHZhgPBlWyDEZ3jSMF4'},
 	    "Hits - 70's": {user: 'spotify', kind: 'playlist', id: '00K2xasnm9pDQk53SzNCht'}
+	    //"Queen - Greatest Hits": {user: '1132164762', kind: 'playlist', id: '1YWmhCHN4jthKuvXS23AMe'}
 	    // "Beatles": {user: 'spotify', kind: 'artist', id: '3WrFJ7ztbogyGnTHbHJFl2'}
 	};
 
