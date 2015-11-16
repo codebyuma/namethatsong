@@ -7,13 +7,10 @@
  * # MainCtrl
  * Controller of the ntsApp
  */
-angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, SongsFactory, Spotify, ngAudio, $state, $timeout) {
+angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, SongsFactory, Spotify, ngAudio, $timeout) {
 
 
     $scope.categoryOptions = SongsFactory.getCategories();
-
-
-    $scope.sound;
 
     $scope.start = true;
     $scope.songList = [];
@@ -22,7 +19,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
     $rootScope.round = 0;
     $rootScope.score = 0;
     $rootScope.gameOver = false;
-
+    $scope.myGuess = {};
     $scope.guessing = false;
     $rootScope.ready = false;
     $scope.haveResult = false;
@@ -187,7 +184,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
         $scope.$broadcast('timer-reset');
         $scope.timerRunning = false;
     }
-    $scope.myGuess = {};
+    
     $scope.submitGuess = function() {
 
         $scope.$broadcast('timer-reset');
