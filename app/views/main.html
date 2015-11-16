@@ -7,7 +7,7 @@
     </div>
     <div class="col-xs-8">
         <div ng-show="gameOver">
-            {{ gameOverMessage }}
+             <i class="fa fa-trophy fa-lg" ng-show="winner"></i>  {{ gameOverMessage }}
             <br>Final score: {{ score }}
         </div>
         <div ng-show="!haveSongs() && start">

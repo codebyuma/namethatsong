@@ -24,6 +24,8 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
     $rootScope.ready = false;
     $scope.haveResult = false;
     $scope.correct = false;
+    $scope.wins = 0;
+    $scope.winner = false;
 
     function getNextSong() {
 
@@ -49,7 +51,14 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
         if ($rootScope.round < $rootScope.maxRounds) {
             $scope.gameOverMessage = "You're out of time!";
         } else {
-            $scope.gameOverMessage = "Game over!";
+        	console.log("scope wins", $scope.wins)
+       		if ($scope.wins === $rootScope.maxRounds){
+       			$scope.winner = true;
+       			$scope.gameOverMessage = "Congratulations! You got a perfect score.";
+       		} else {
+       			$scope.gameOverMessage = "Game over!";
+       		}
+            
         }
         $scope.songs[$scope.currentSong].pause();
         $rootScope.gameOver = true;
@@ -73,7 +82,8 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
         $scope.start = false;
         $rootScope.score = 0;
         $rootScope.round++;
-
+        $scope.wins = 0;
+        
 
         SongsFactory.getSongList(type)
             .then(function(songs) {
@@ -143,6 +153,8 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
             } else {
                 $timeout(function() {
                     $rootScope.ready = true;
+                    $scope.winner = false;
+
                 }, 1000);
 
             }
@@ -196,6 +208,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
 
         if (songToGuess === $scope.myGuess.guess) {
         	$scope.correct = true;
+        	$scope.wins++;
             $scope.result = "Woo! You are correct!";
             $scope.answer = "The answer is: " + songToGuess;
             $rootScope.score = Math.floor($rootScope.score + 1 + $scope.songs[$scope.currentSong].remaining);
