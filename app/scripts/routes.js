@@ -10,13 +10,18 @@
 angular.module('ntsApp').config(['$routeProvider', function($routeProvider) {
     $routeProvider
       .when('/', {
+        templateUrl: 'views/login.html',
+        controller: 'loginCtrl'
+      })
+      .when('/play', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
-      .when('/play', {
-        templateUrl: 'views/play.html',
-        controller: 'MainCtrl'
-      })
+      
+      // .when('/play', {
+      //   templateUrl: 'views/play.html',
+      //   controller: 'MainCtrl'
+      // })
 
       .otherwise({redirectTo: '/'});
   }]);
