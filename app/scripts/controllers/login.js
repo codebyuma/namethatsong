@@ -12,6 +12,8 @@ angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $h
                 var hashParams = {};
                 var e, r = /([^&;=]+)=?([^&;]*)/g,
                     q = window.location.hash.substring(1);
+                    console.log("in gethashparams, q", q);
+                     console.log("in gethashparams, window location hash", window.location.hash);
                 while (e = r.exec(q)) {
                     hashParams[e[1]] = decodeURIComponent(e[2]);
                 }
@@ -44,9 +46,11 @@ angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $h
             var access_token = params.access_token,
                 state = params.state,
                 storedState = localStorage.getItem(stateKey);
-
+                console.log("params", params);
                 console.log("LOCAL STORAGE? ", localStorage);
                 console.log("access token?", access_token);
+                 console.log("state", state);
+                  console.log("storedState", storedState);
 
             if (access_token && (state == null || state !== storedState)) {
                 alert('There was an error during the authentication');
@@ -76,41 +80,6 @@ angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $h
 
                 $scope.login = function() {
 
-                	 // use the return URL to get the various variabls    
-			            var params = getHashParams();
-			            var access_token = params.access_token,
-			                state = params.state,
-			                storedState = localStorage.getItem(stateKey);
-
-			            if (access_token && (state == null || state !== storedState)) {
-                    console.log("in here?")
-			                alert('There was an error during the authentication');
-			            } else {
-                    console.log("in there")
-			                localStorage.removeItem(stateKey);
-                    if (access_token) {
-                      console.log("access_token", access_token);
-                      $http.get({
-                          url: 'https://api.spotify.com/v1/me',
-                          headers: {
-                              'Authorization': 'Bearer ' + access_token
-                          }})
-                      .then (function(response) {
-                            console.log("response", response);
-                              //userProfilePlaceholder.innerHTML = userProfileTemplate(response);
-                              // $('#login').hide();
-                              // $('#loggedin').show();
-                              $scope.loggedIn = true;
-                          })
-                    // });
-			                } else {
-			                    // $('#login').show();
-			                    // $('#loggedin').hide();
-			                    $scope.loggedIn = false;
-			                }
-			            }
-
-
                     console.log("in login");
                     // $('login-button').addEventListener('click', function() {
                     var client_id = '7025ce5e8b8d4e839abd1fc0ba0fff17'; // Your client id
@@ -124,8 +93,9 @@ angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $h
                     url += '&scope=' + encodeURIComponent(scope);
                     url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
                     url += '&state=' + encodeURIComponent(state);
+                    
                     window.location = url;
-
+                    console.log("url: url");
 
 			                   
                 };
@@ -135,8 +105,7 @@ angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $h
 
 
 
-
-
+          
   // <script id="user-profile-template" type="text/x-handlebars-template">
   //     <h1>Logged in as {{display_name}}</h1>
   //     <div class="media">
