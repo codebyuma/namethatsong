@@ -97,14 +97,15 @@ angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $h
           }
 
           if ($scope.access_token && (state == null || state !== storedState)) {
-                  alert('There was an error during the authentication');
+                  console.log('There was an error during the authentication');
                 } else {
                   localStorage.removeItem(stateKey);
                   if ($scope.access_token) {
 
                     $scope.getProfile($scope.access_token)
                     .then (function(response){
-                      console.log("wooo", response);
+                      $scope.email = response.email;
+                      $scope.country = response.country;
                       $scope.loggedIn = true;
                     })
 
