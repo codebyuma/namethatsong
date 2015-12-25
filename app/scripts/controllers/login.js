@@ -13,24 +13,7 @@ angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $h
               console.log("state", state)
               console.log("stored state", storedState);
 
-                if ($scope.access_token && (state == null || state !== storedState)) {
-                  alert('There was an error during the authentication');
-                } else {
-                  localStorage.removeItem(stateKey);
-                  if ($scope.access_token) {
-
-                    $scope.getProfile($scope.access_token)
-                    .then (function(response){
-                      console.log("wooo", response);
-                      $scope.loggedIn = true;
-                    })
-
-                  } else {
-                      // $('#login').show();
-                      // $('#loggedin').hide();
-                      $scope.loggedIn = false;
-                  }
-                }
+                
           
           // implicit grant flow
 
@@ -112,6 +95,25 @@ angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $h
             });
 
           }
+
+          if ($scope.access_token && (state == null || state !== storedState)) {
+                  alert('There was an error during the authentication');
+                } else {
+                  localStorage.removeItem(stateKey);
+                  if ($scope.access_token) {
+
+                    $scope.getProfile($scope.access_token)
+                    .then (function(response){
+                      console.log("wooo", response);
+                      $scope.loggedIn = true;
+                    })
+
+                  } else {
+                      // $('#login').show();
+                      // $('#loggedin').hide();
+                      $scope.loggedIn = false;
+                  }
+                }
 
           // 1. get request to https://accounts.spotify.com/authorize
             // include client_id, response_type, redirect_uri, state, scope, show_dialog
