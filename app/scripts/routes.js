@@ -13,14 +13,14 @@ angular.module('ntsApp').config(['$routeProvider', function($routeProvider) {
         templateUrl: 'views/login.html',
         controller: 'loginCtrl'
       })
-      .when('/play', {
+      .when('/:access_token', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
-      .when('/:access_token', {
-        templateUrl: 'views/login.html',
-        controller: 'loginCtrl'
-      })
+      // .when('/:access_token', {
+      //   templateUrl: 'views/login.html',
+      //   controller: 'loginCtrl'
+      // })
 
       // .when('/play', {
       //   templateUrl: 'views/play.html',

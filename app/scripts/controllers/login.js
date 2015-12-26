@@ -1,12 +1,13 @@
 'use strict';
 angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $http) {
-          var stateKey = 'spotify_auth_state';
-          console.log("hash", getHashParams());
+          $rootScope.stateKey = 'spotify_auth_state';
+          console.log("state key 1", $rootScope.stateKey);
+          //console.log("hash", getHashParams());
 
           var params = getHashParams();
               $scope.access_token = params["/access_token"];
               var state = params.state,
-              storedState = localStorage.getItem(stateKey);
+              storedState = localStorage.getItem($rootScope.stateKey);
 
               console.log("params", params)
               console.log("access token", $scope.access_token)
@@ -50,7 +51,7 @@ angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $h
           // making an http request to get auth doesn't work - they want us to redirect via the browser
           $scope.requestAuth = function (){
               var state = generateRandomString(16);
-              localStorage.setItem(stateKey, state);
+              localStorage.setItem($rootScope.stateKey, state);
 
                 var url = 'https://accounts.spotify.com/authorize'
                     url += '?response_type=token';
@@ -99,7 +100,7 @@ angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $h
           if ($scope.access_token && (state == null || state !== storedState)) {
                   console.log('There was an error during the authentication');
                 } else {
-                  localStorage.removeItem(stateKey);
+                  localStorage.removeItem($rootScope.stateKey);
                   if ($scope.access_token) {
 
                     $scope.getProfile($scope.access_token)
