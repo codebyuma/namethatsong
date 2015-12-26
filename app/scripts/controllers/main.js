@@ -44,8 +44,9 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
 
 
     $scope.submitRounds = function (){
-        console.log("rounds number", $scope.rounds.number);
-    }
+        $rootScope.maxRounds = $scope.rounds.number;
+        $scope.haveRounds = true;
+    }   
 
 
     /**
@@ -163,6 +164,7 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
         	$scope.start = true;
 	        $rootScope.ready = false;
 	        $scope.$broadcast('timer-reset');
+            $scope.haveRounds = false;
         }, 3000)
         
 
