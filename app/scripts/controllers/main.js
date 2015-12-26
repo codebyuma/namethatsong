@@ -9,7 +9,7 @@
  */
 
 
-angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsFactory', 'ngAudio', '$timeout', '$http', function($scope, $rootScope, SongsFactory, ngAudio, $timeout, $http) {
+angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsFactory', 'ngAudio', '$timeout', '$http', '$state', function($scope, $rootScope, SongsFactory, ngAudio, $timeout, $http, $state) {
 
     $rootScope.stateKey = 'spotify_auth_state';
     console.log("state key 2", $rootScope.stateKey);
@@ -91,6 +91,7 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
 
           if ($rootScope.access_token && (state == null || state !== storedState)) {
                   console.log('There was an error during the authentication');
+                  $state.go('login');
                 } else {
                   localStorage.removeItem($rootScope.stateKey);
                   if ($rootScope.access_token) {
