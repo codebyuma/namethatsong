@@ -1,33 +1,7 @@
 <div class="container">
-    <div ng-show="!loggedIn">
-        <h1>This is an example of the Implicit Grant flow</h1>
+    <div>
+        <h2>Welcome! <br>Please log into your Spotify account to play.</h2>
         <button id="login-button" class="btn btn-primary" ng-click="loginUser()">Log in with Spotify</button>
-    </div>
-    <div ng-show="loggedIn">
-        <div id="user-profile">
-            <h1>Logged in as {{display_name}}</h1>
-            <div class="media">
-                <div class="media-body">
-                    <dl class="dl-horizontal">
-                        <!-- <dt>Display name</dt>
-                        <dd class="clearfix">{{display_name}}</dd>
-                        <dt>Id</dt>
-                        <dd>{{id}}</dd> -->
-                        <dt>Email</dt>
-                        <dd>{{email}}</dd>
-                        <dt>Country</dt>
-                        <dd>{{country}}</dd>
-                    </dl>
-                </div>
-            </div>
-        </div>
-        <div>
-            <h2>oAuth info</h2>
-            <dl class="dl-horizontal">
-                <dt>Access token</dt>
-                <dd>{{access_token}}</dd>
-            </dl>
-        </div>
     </div>
 </div>
   
