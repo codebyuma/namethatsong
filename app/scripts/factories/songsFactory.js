@@ -1,12 +1,7 @@
 'use strict';
 
-angular.module('ntsApp').factory('SongsFactory', function ($http){
+angular.module('ntsApp').factory('SongsFactory', ['$http', '$rootScope', function ($http, $rootScope){
 	var SongsFactory = {};
-
-	// $http.defaults.headers.common['Authorization'] = 'Bearer BQAKZ_BPTtzT2f3gs1Pa47R1NdPjKVDg0ebNPcY63aarTqIkQ7EnDbPFKIkoFU0D1WQ7XpdgiR1yhXrK6ELvsNwm_Gya3pGa8Gs4WmzfFoofIy40QIVn_c4FqRMrEvyKG6n6pQA';
-
-
-	$http.defaults.headers.common.Authorization = 'Bearer BQCJavCGIuPYs5Pp5H00_SjEzdMLNme-IYv_ddZnstnRUUHekq6pWhyopmHe1B1jibWo74j3K3l2fFEvq0eeUaejjrXwToNWCbvvXxLFnD51r4dygaeYGWZp3Qr8_OUnTE166B0';
 
 	var playlistOptions = {
 		"Current Top 40": {user: 'spotify', kind: 'playlist', id: '5FJXhjdILmRA2z5bvz4nzf'},
@@ -77,4 +72,4 @@ angular.module('ntsApp').factory('SongsFactory', function ($http){
 
 	return SongsFactory;
 
-});
+}]);

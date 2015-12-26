@@ -1,5 +1,5 @@
 'use strict';
-angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $http) {
+angular.module('ntsApp').controller('loginCtrl', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
           $rootScope.stateKey = 'spotify_auth_state';
           console.log("state key 1", $rootScope.stateKey);
           //console.log("hash", getHashParams());
@@ -9,10 +9,6 @@ angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $h
               var state = params.state,
               storedState = localStorage.getItem($rootScope.stateKey);
 
-              console.log("params", params)
-              console.log("access token", $scope.access_token)
-              console.log("state", state)
-              console.log("stored state", storedState);
 
                 
           
@@ -74,51 +70,9 @@ angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $h
           }
 
           
-             
-          
-
-          // once user has authorized and we have their token, use it to get profile info
-          // make get request to spotify/me
-          // ALSO ADD TOKEN TO SCOPE
-          $scope.getProfile = function (token){
-            
-
-            var url = 'https://api.spotify.com/v1/me';
-            $http.defaults.headers.common.Authorization = 'Bearer ' + token;
-
-            return $http.get(url)
-            .then (function(response){
-              //console.log('response for profile request: ', response.data);
-              return response.data;
-            }, function (error){
-              //console.log('failed to get profile', error.data);
-              return error;
-            });
-
-          }
-
-          if ($scope.access_token && (state == null || state !== storedState)) {
-                  console.log('There was an error during the authentication');
-                } else {
-                  localStorage.removeItem($rootScope.stateKey);
-                  if ($scope.access_token) {
-
-                    $scope.getProfile($scope.access_token)
-                    .then (function(response){
-                      $scope.email = response.email;
-                      $scope.country = response.country;
-                      $scope.loggedIn = true;
-                    })
-
-                  } else {
-
-                      $scope.loggedIn = false;
-                  }
-                }
-
-       
+     
 
 
-     })
+     }])
 
 

@@ -7,14 +7,16 @@
  * # MainCtrl
  * Controller of the ntsApp
  */
-angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, SongsFactory, Spotify, ngAudio, $timeout, $http) {
+
+
+angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsFactory', 'ngAudio', '$timeout', '$http', function($scope, $rootScope, SongsFactory, ngAudio, $timeout, $http) {
 
     $rootScope.stateKey = 'spotify_auth_state';
     console.log("state key 2", $rootScope.stateKey);
 
     // AUTH STUFF
     var params = getHashParams();
-      $scope.access_token = params["/access_token"];
+      $rootScope.access_token = params["/access_token"];
       var state = params.state,
       storedState = localStorage.getItem($rootScope.stateKey);
 
@@ -87,17 +89,17 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
 
           }
 
-          if ($scope.access_token && (state == null || state !== storedState)) {
+          if ($rootScope.access_token && (state == null || state !== storedState)) {
                   console.log('There was an error during the authentication');
                 } else {
                   localStorage.removeItem($rootScope.stateKey);
-                  if ($scope.access_token) {
-
-                    $scope.getProfile($scope.access_token)
+                  if ($rootScope.access_token) {
+                    $scope.getProfile($rootScope.access_token)
                     .then (function(response){
                       $scope.email = response.email;
                       $scope.country = response.country;
                       $scope.loggedIn = true;
+                      // $rootScope.$digest();
                       console.log("profile response", response)
                     })
 
@@ -335,4 +337,4 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
         return $scope.songList.length > 0;
     }
 
-});
+}]);
