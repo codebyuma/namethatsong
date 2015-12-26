@@ -12,7 +12,6 @@
 angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsFactory', 'ngAudio', '$timeout', '$http', '$state', function($scope, $rootScope, SongsFactory, ngAudio, $timeout, $http, $state) {
 
     $rootScope.stateKey = 'spotify_auth_state';
-    console.log("state key 2", $rootScope.stateKey);
 
     // AUTH STUFF
     var params = getHashParams();
@@ -27,7 +26,7 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
     $scope.start = true;
     $scope.songList = [];
     $scope.songs = [];
-    $rootScope.maxRounds = 4;
+    $rootScope.maxRounds = 10;
     $rootScope.round = 0;
     $rootScope.score = 0;
     $rootScope.gameOver = false;
@@ -38,7 +37,15 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
     $scope.correct = false;
     $scope.wins = 0;
     $scope.winner = false;
+    $scope.haveRounds = false;
 
+    $scope.roundsRange = _.range(1, 10);
+
+
+
+    $scope.submitRounds = function (){
+        console.log("rounds number", $scope.rounds.number);
+    }
 
 
     /**

@@ -32,7 +32,31 @@
     <!-- Todos input -->
 </div>
 
-<div class="play" ng-show="haveSongs() && !gameOver && !ready && haveResult">
+{{ haveRounds }}
+
+<div class="play" ng-show="!haveRounds && haveSongs()">
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+           <form role="form" ng-submit="submitRounds()">
+                <div class="row">
+                    <p></p>
+                    <label>How many rounds would you like?: </label>
+                    <select class="roundsForm" name="rounds" ng-model="rounds.number">
+                        <option ng-repeat="val in roundsRange">{{ val }}</option>
+                    </select>
+                    <p>
+                        <button class="btn btn-primary">Submit</button>
+                    </p>
+                </div>
+            </form>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+</div>
+
+
+<div class="play" ng-show="haveRounds && haveSongs() && !gameOver && !ready && haveResult">
     <div class="row">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
@@ -49,7 +73,7 @@
 
 
 
-<div class="play" ng-show="haveSongs() && !gameOver && ready">
+<div class="play" ng-show="haveRounds && haveSongs() && !gameOver && ready">
     <div class="row">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">

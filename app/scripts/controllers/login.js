@@ -1,14 +1,13 @@
 'use strict';
 angular.module('ntsApp').controller('loginCtrl', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
           $rootScope.stateKey = 'spotify_auth_state';
-          console.log("state key 1", $rootScope.stateKey);
+          
           //console.log("hash", getHashParams());
 
           var params = getHashParams();
               $scope.access_token = params["/access_token"];
               var state = params.state,
               storedState = localStorage.getItem($rootScope.stateKey);
-
 
                 
           
