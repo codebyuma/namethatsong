@@ -292,6 +292,7 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
         $scope.haveResult = true;
 
         if (songToGuess === $scope.myGuess.guess) {
+
         	$scope.correct = true;
         	$scope.wins++;
             $scope.result = "Woo! You are correct!";
