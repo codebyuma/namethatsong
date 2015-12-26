@@ -7,7 +7,19 @@
  * # MainCtrl
  * Controller of the ntsApp
  */
-angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, SongsFactory, Spotify, ngAudio, $timeout) {
+
+
+angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsFactory', 'ngAudio', '$timeout', '$http', '$state', function($scope, $rootScope, SongsFactory, ngAudio, $timeout, $http, $state) {
+
+    $rootScope.stateKey = 'spotify_auth_state';
+    console.log("state key 2", $rootScope.stateKey);
+
+    // AUTH STUFF
+    var params = getHashParams();
+      $rootScope.access_token = params["/access_token"];
+      var state = params.state,
+      storedState = localStorage.getItem($rootScope.stateKey);
+
 
 
     $scope.categoryOptions = SongsFactory.getCategories();
@@ -26,6 +38,79 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
     $scope.correct = false;
     $scope.wins = 0;
     $scope.winner = false;
+
+
+
+    /**
+         * Obtains parameters from the hash of the URL
+         * @return Object
+         */
+        function getHashParams() {
+          var hashParams = {};
+          var e, r = /([^&;=]+)=?([^&;]*)/g,
+              q = window.location.hash.substring(1);
+          while ( e = r.exec(q)) {
+             hashParams[e[1]] = decodeURIComponent(e[2]);
+          }
+          return hashParams;
+        }
+        /**
+         * Generates a random string containing numbers and letters
+         * @param  {number} length The length of the string
+         * @return {string} The generated string
+         */
+          function generateRandomString(length) {
+            var text = '';
+            var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            for (var i = 0; i < length; i++) {
+              text += possible.charAt(Math.floor(Math.random() * possible.length));
+            }
+            return text;
+          };
+
+
+          // once user has authorized and we have their token, use it to get profile info
+          // make get request to spotify/me
+          // ALSO ADD TOKEN TO SCOPE
+          $scope.getProfile = function (token){
+            
+
+            var url = 'https://api.spotify.com/v1/me';
+            $http.defaults.headers.common.Authorization = 'Bearer ' + token;
+
+            return $http.get(url)
+            .then (function(response){
+              //console.log('response for profile request: ', response.data);
+              return response.data;
+            }, function (error){
+              //console.log('failed to get profile', error.data);
+              return error;
+            });
+
+          }
+
+          if ($rootScope.access_token && (state == null || state !== storedState)) {
+                  console.log('There was an error during the authentication');
+                  $state.go('login');
+                } else {
+                  localStorage.removeItem($rootScope.stateKey);
+                  if ($rootScope.access_token) {
+                    $scope.getProfile($rootScope.access_token)
+                    .then (function(response){
+                      $scope.email = response.email;
+                      $scope.country = response.country;
+                      $scope.loggedIn = true;
+                      // $rootScope.$digest();
+                      console.log("profile response", response)
+                    })
+
+                  } else {
+
+                      $scope.loggedIn = false;
+                  }
+                }
+
+
 
     function getNextSong() {
 
@@ -207,6 +292,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
         $scope.haveResult = true;
 
         if (songToGuess === $scope.myGuess.guess) {
+
         	$scope.correct = true;
         	$scope.wins++;
             $scope.result = "Woo! You are correct!";
@@ -253,4 +339,4 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
         return $scope.songList.length > 0;
     }
 
-});
+}]);
