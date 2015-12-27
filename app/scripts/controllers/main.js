@@ -1,14 +1,13 @@
 'use strict';
 
-
 angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, SongsFactory, ngAudio, $timeout, $http, $state) {
 
     /*** --------- Intitial Spotify Auth stuff --------- ***/
-    $rootScope.stateKey = 'spotify_auth_state';
+    $scope.stateKey = 'spotify_auth_state';
     var params = getHashParams();
     $rootScope.access_token = params["/access_token"];
     var spotifyState = params.state,
-    storedSpotifyState = localStorage.getItem($rootScope.stateKey);
+        storedSpotifyState = localStorage.getItem($scope.stateKey);
 
 
     /*** --------- Variable declarations and initializations --------- ***/
@@ -32,7 +31,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
     $scope.roundsRange = _.range(1, 10);
 
 
-    /*** --------- Spotify Auth Functions --------- ***/
+    /*** --------- Spotify Auth Functions - Implicit Grant Flow --------- ***/
 
     // Obtains parameters from the hash of the URL
     function getHashParams() {
@@ -74,7 +73,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
         // console.log('There was an error during the authentication');
         $state.go('login');
     } else {
-        localStorage.removeItem($rootScope.stateKey);
+        localStorage.removeItem($scope.stateKey);
         if ($rootScope.access_token) {
             $scope.getProfile($rootScope.access_token)
                 .then(function(response) {
