@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ntsApp').factory('SongsFactory', ['$http', '$rootScope', function($http, $rootScope) {
+angular.module('ntsApp').factory('SongsFactory', function($http, $rootScope) {
     var SongsFactory = {};
 
     var playlistOptions = {
@@ -113,4 +113,4 @@ angular.module('ntsApp').factory('SongsFactory', ['$http', '$rootScope', functio
 
     return SongsFactory;
 
-}]);
+});
