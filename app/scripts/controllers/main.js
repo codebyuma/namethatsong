@@ -114,7 +114,6 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
                     })
 
                   } else {
-
                       $scope.loggedIn = false;
                   }
                 }
