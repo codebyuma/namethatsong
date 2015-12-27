@@ -1,119 +1,102 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name ntsApp.controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the ntsApp
- */
 
+angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, SongsFactory, ngAudio, $timeout, $http, $state) {
 
-angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsFactory', 'ngAudio', '$timeout', '$http', '$state', function($scope, $rootScope, SongsFactory, ngAudio, $timeout, $http, $state) {
-
+    /*** --------- Intitial Spotify Auth stuff --------- ***/
     $rootScope.stateKey = 'spotify_auth_state';
-
-    // AUTH STUFF
     var params = getHashParams();
-      $rootScope.access_token = params["/access_token"];
-      var state = params.state,
-      storedState = localStorage.getItem($rootScope.stateKey);
+    $rootScope.access_token = params["/access_token"];
+    var spotifyState = params.state,
+    storedSpotifyState = localStorage.getItem($rootScope.stateKey);
 
 
-    $scope.categoryOptions = SongsFactory.getCategories();
+    /*** --------- Variable declarations and initializations --------- ***/
 
     $scope.start = true;
+    $rootScope.gameOver = false;
+    $scope.guessing = false;
+    $rootScope.ready = false;
+    $scope.haveResult = false;
+    $scope.correct = false;
+    $scope.winner = false;
+    $rootScope.haveRounds = false;
+
     $scope.songList = [];
     $scope.songs = [];
     $rootScope.maxRounds = 10;
     $rootScope.round = 0;
     $rootScope.score = 0;
-    $rootScope.gameOver = false;
     $scope.myGuess = {};
-    $scope.guessing = false;
-    $rootScope.ready = false;
-    $scope.haveResult = false;
-    $scope.correct = false;
     $scope.wins = 0;
-    $scope.winner = false;
-    $rootScope.haveRounds = false;
-
     $scope.roundsRange = _.range(1, 10);
 
 
+    /*** --------- Spotify Auth Functions --------- ***/
 
-    $scope.submitRounds = function (){
+    // Obtains parameters from the hash of the URL
+    function getHashParams() {
+        var hashParams = {};
+        var e, r = /([^&;=]+)=?([^&;]*)/g,
+            q = window.location.hash.substring(1);
+        while (e = r.exec(q)) {
+            hashParams[e[1]] = decodeURIComponent(e[2]);
+        }
+        return hashParams;
+    }
+
+    // Generates a random string containing numbers and letters
+    function generateRandomString(length) {
+        var text = '';
+        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for (var i = 0; i < length; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return text;
+    };
+
+    // once user has authorized and we have their token, use it to get profile info
+    $scope.getProfile = function(token) {
+        var url = 'https://api.spotify.com/v1/me';
+        $http.defaults.headers.common.Authorization = 'Bearer ' + token;
+        return $http.get(url)
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
+            });
+    }
+
+
+    // when we load this state, check for Spotify access token and request profile info 
+    // or redirect to login 
+    if ($rootScope.access_token && (spotifyState == null || spotifyState !== storedSpotifyState)) {
+        // console.log('There was an error during the authentication');
+        $state.go('login');
+    } else {
+        localStorage.removeItem($rootScope.stateKey);
+        if ($rootScope.access_token) {
+            $scope.getProfile($rootScope.access_token)
+                .then(function(response) {
+                    $rootScope.username = response.id;
+                    $rootScope.email = response.email;
+                    $rootScope.country = response.country;
+                    $scope.loggedIn = true;
+                })
+
+        } else {
+            $scope.loggedIn = false;
+        }
+    }
+
+    /*** --------- Game Play Functions --------- ***/
+
+    $scope.categoryOptions = SongsFactory.getCategories();
+
+    $scope.submitRounds = function() {
         $rootScope.maxRounds = $scope.rounds.number;
         $rootScope.haveRounds = true;
-    }   
-
-
-    /**
-         * Obtains parameters from the hash of the URL
-         * @return Object
-         */
-        function getHashParams() {
-          var hashParams = {};
-          var e, r = /([^&;=]+)=?([^&;]*)/g,
-              q = window.location.hash.substring(1);
-          while ( e = r.exec(q)) {
-             hashParams[e[1]] = decodeURIComponent(e[2]);
-          }
-          return hashParams;
-        }
-        /**
-         * Generates a random string containing numbers and letters
-         * @param  {number} length The length of the string
-         * @return {string} The generated string
-         */
-          function generateRandomString(length) {
-            var text = '';
-            var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            for (var i = 0; i < length; i++) {
-              text += possible.charAt(Math.floor(Math.random() * possible.length));
-            }
-            return text;
-          };
-
-
-          // once user has authorized and we have their token, use it to get profile info
-          // make get request to spotify/me
-          // ALSO ADD TOKEN TO SCOPE
-          $scope.getProfile = function (token){
-            
-
-            var url = 'https://api.spotify.com/v1/me';
-            $http.defaults.headers.common.Authorization = 'Bearer ' + token;
-
-            return $http.get(url)
-            .then (function(response){
-              return response.data;
-            }, function (error){
-              return error;
-            });
-
-          }
-
-          if ($rootScope.access_token && (state == null || state !== storedState)) {
-                  // console.log('There was an error during the authentication');
-                  $state.go('login');
-                } else {
-                  localStorage.removeItem($rootScope.stateKey);
-                  if ($rootScope.access_token) {
-                    $scope.getProfile($rootScope.access_token)
-                    .then (function(response){
-                      $rootScope.username = response.id;
-                      $rootScope.email = response.email;
-                      $rootScope.country = response.country;
-                      $scope.loggedIn = true;
-                    })
-
-                  } else {
-                      $scope.loggedIn = false;
-                  }
-                }
-
-
+    }
 
     function getNextSong() {
 
@@ -139,28 +122,28 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
         if ($rootScope.round < $rootScope.maxRounds) {
             $scope.gameOverMessage = "You're out of time!";
         } else {
-       		if ($scope.wins === $rootScope.maxRounds){
-       			$scope.winner = true;
-       			$scope.gameOverMessage = "Congratulations superstar! You won all " + $scope.maxRounds + " rounds!";
-       		} else {
-       			$scope.gameOverMessage = "Game over!";
-       		}
-            
+            if ($scope.wins === $rootScope.maxRounds) {
+                $scope.winner = true;
+                $scope.gameOverMessage = "Congratulations superstar! You won all " + $scope.maxRounds + " rounds!";
+            } else {
+                $scope.gameOverMessage = "Game over!";
+            }
+
         }
         $scope.songs[$scope.currentSong].pause();
         $rootScope.gameOver = true;
 
-        $timeout(function (){
-        	$scope.songList = [];
-       		 $scope.songs = [];
-        	$rootScope.round = 0;
-        	$rootScope.gameOver = false;
-        	$scope.start = true;
-	        $rootScope.ready = false;
-	        $scope.$broadcast('timer-reset');
+        $timeout(function() {
+            $scope.songList = [];
+            $scope.songs = [];
+            $rootScope.round = 0;
+            $rootScope.gameOver = false;
+            $scope.start = true;
+            $rootScope.ready = false;
+            $scope.$broadcast('timer-reset');
             $rootScope.haveRounds = false;
         }, 3000)
-        
+
 
 
     }
@@ -171,7 +154,7 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
         $rootScope.score = 0;
         $rootScope.round++;
         $scope.wins = 0;
-        
+
 
         SongsFactory.getSongList(type)
             .then(function(songs) {
@@ -270,8 +253,8 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
     }
 
     $scope.startTimer = function() {
-    	$scope.correct = true;
-    	$scope.$broadcast('timer-reset');
+        $scope.correct = true;
+        $scope.$broadcast('timer-reset');
         $scope.haveResult = false;
         $scope.$broadcast('timer-start');
         $scope.timerRunning = true;
@@ -283,7 +266,7 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
         $scope.$broadcast('timer-reset');
         $scope.timerRunning = false;
     }
-    
+
     $scope.submitGuess = function() {
 
         $scope.$broadcast('timer-reset');
@@ -295,15 +278,15 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
 
         if (songToGuess === $scope.myGuess.guess) {
 
-        	$scope.correct = true;
-        	$scope.wins++;
+            $scope.correct = true;
+            $scope.wins++;
             $scope.result = "Woo! You are correct!";
             $scope.answer = "The answer is: " + songToGuess;
             $rootScope.score = Math.floor($rootScope.score + 1 + $scope.songs[$scope.currentSong].remaining);
             //Math.floor($scope.songs[$scope.currentSong].currentTime)
 
         } else {
-        	$scope.correct = false;
+            $scope.correct = false;
             $scope.result = "Doh! That's wrong.";
             $scope.answer = "The correct answer is: " + songToGuess;
         }
@@ -321,12 +304,12 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
             }, 2000);
 
         } else {
-			$scope.songs[$scope.currentSong].pause();
-			$rootScope.ready = false;
-                $scope.guessing = false;
+            $scope.songs[$scope.currentSong].pause();
+            $rootScope.ready = false;
+            $scope.guessing = false;
 
             $timeout(function() {
-                
+
                 $scope.timesUp();
                 $scope.haveResult = false;
                 $scope.result = "";
@@ -341,4 +324,4 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
         return $scope.songList.length > 0;
     }
 
-}]);
+});
