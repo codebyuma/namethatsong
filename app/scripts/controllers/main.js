@@ -20,7 +20,6 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
       storedState = localStorage.getItem($rootScope.stateKey);
 
 
-
     $scope.categoryOptions = SongsFactory.getCategories();
 
     $scope.start = true;
