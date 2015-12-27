@@ -9,12 +9,7 @@
  * Main module of the application.
  */
 angular.module('ntsApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch',
+     'ngRoute',
     'firebase',
     'firebase.ref',
     'LocalStorageModule',
