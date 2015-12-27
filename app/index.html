@@ -1,6 +1,7 @@
 <!doctype html>
 <html class="no-js">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title></title>
     <meta name="description" content="">
@@ -15,36 +16,30 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
-  </head>
-  <body ng-app="ntsApp">
+</head>
 
-
+<body ng-app="ntsApp">
     <div class="header" ng-controller="headerCtrl">
-      <div class="row">
-        <div class="col-xs-8">
-      <h1><a href="#/"><i class="fa fa-music fa-lg"></i> Name That Song!</a></h1>
-    </div>
-    <div class="col-xs-4">
-      <div class="gameStatus pull-right"><div ng-show="!gameOver && ready">Current score: {{ score }} | Round: {{ round }} of {{ maxRounds }} </div></div></div>
-    </div>
+        <div class="row">
+            <div class="col-xs-8"><br>
+                <h1><a href="#/"><i class="fa fa-music fa-lg"></i> Name That Song!</a></h1>
+            </div>
+            <div class="col-xs-4">
+                <div class="gameStatus pull-right" ng-show="haveRounds && ready">Hello {{ username!==null ? username : email }}!
+                    <div ng-show="!gameOver">Current score: {{ score }} | Round: {{ round }} of {{ maxRounds }} </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="jumbotron">
-      <div ng-view="">
-      </div>
+        <div ng-view="">
+        </div>
     </div>
-
-
-
     <div class="footer">
-      <div class="container">
-        <p>Made with <span class="glyphicon glyphicon-heart"></span> by Uma Chandran.</p>
-      </div>
+        <div class="container">
+            <p>Made with <span class="glyphicon glyphicon-heart"></span> by Uma Chandran.</p>
+        </div>
     </div>
-
-
-
-
-
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -69,20 +64,19 @@
     <script src="bower_components/moment/moment.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
-
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-         <script src="scripts/gameplay.js"></script>
-          <script src="scripts/login.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-         <script src="scripts/controllers/login.js"></script>
-        <script src="scripts/angularfire/config.js"></script>
-        <script src="scripts/angularfire/firebase.ref.js"></script>
-         <script src="scripts/controllers/header.js"></script>
-       <script src="scripts/filters/reverse.js"></script>
-        <script src="scripts/routes.js"></script>
-        <script src="scripts/factories/songsFactory.js"></script>
-      
-        <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/gameplay.js"></script>
+    <script src="scripts/login.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/angularfire/config.js"></script>
+    <script src="scripts/angularfire/firebase.ref.js"></script>
+    <script src="scripts/controllers/header.js"></script>
+    <script src="scripts/filters/reverse.js"></script>
+    <script src="scripts/routes.js"></script>
+    <script src="scripts/factories/songsFactory.js"></script>
+    <!-- endbuild -->
 </body>
+
 </html>
