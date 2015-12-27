@@ -1,5 +1,3 @@
-
-
 <div class="row">
     <div class="col-xs-2">
         <!-- anything typed in here is magically saved to our Firebase database! -->
@@ -9,7 +7,7 @@
     </div>
     <div class="col-xs-8">
         <div ng-show="gameOver">
-             <i class="fa fa-trophy fa-lg" ng-show="winner"></i>  {{ gameOverMessage }}
+            <i class="fa fa-trophy fa-lg" ng-show="winner"></i> {{ gameOverMessage }}
             <br>Final score: {{ score }}
         </div>
         <div ng-show="!haveSongs() && start">
@@ -29,15 +27,34 @@
     </div>
     <div class="col-xs-2">
     </div>
-    <!-- Todos input -->
 </div>
 
-<div class="play" ng-show="haveSongs() && !gameOver && !ready && haveResult">
+<div class="row" ng-show="!haveRounds && haveSongs()">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8">
+        <form role="form" ng-submit="submitRounds()">
+            <div class="row">
+                <p></p>
+                <label>How many rounds would you like?: </label>
+                <br>
+                <select class="roundsForm" name="rounds" ng-model="rounds.number">
+                    <option ng-repeat="val in roundsRange">{{ val }}</option>
+                </select>
+                <p>
+                    <button class="btn btn-primary">Submit</button>
+                </p>
+            </div>
+        </form>
+    </div>
+    <div class="col-xs-2"></div>
+</div>
+
+<div class="play" ng-show="haveRounds && haveSongs() && !gameOver && !ready && haveResult">
     <div class="row">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
-           <div>
-                <i class="fa fa-thumbs-up fa-lg" ng-show="correct"></i> 
+            <div>
+                <i class="fa fa-thumbs-up fa-lg" ng-show="correct"></i>
                 <i class="fa fa-thumbs-down fa-lg" ng-show="!correct"></i> {{ result }}
                 <br> {{ answer }}
             </div>
@@ -46,46 +63,33 @@
     </div>
 </div>
 
-
-
-
-<div class="play" ng-show="haveSongs() && !gameOver && ready">
+<div class="play" ng-show="haveRounds && haveSongs() && !gameOver && ready">
     <div class="row">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
             <div>Round {{ round }}:</div>
             <button ng-click="songs[currentSong].play();startTimer()" volume="0.5" start="0.2" class="btn btn-info" ng-disabled="guessing">Play</button>
             <button ng-click="buzzIn();stopTimer()" volume="0.5" start="0.2" class="btn btn-success" ng-disabled="guessing">Buzzer!</button>
-
             <br>
             <timer interval="1000" countdown="20" finish-callback="timesUp()" autostart="false">Time left: <b>{{countdown}}</b></timer>
-            
         </div>
         <div class="col-xs-2"></div>
     </div>
-
 </div>
+
 <div class="container" ng-show="haveSongs() && !gameOver && guessing">
     <div class="row">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
             <form role="form" ng-submit="submitGuess()">
-               
-                  <br>
-
+                <br>
                 <div data-ng-repeat="choice in songList[currentSong].guessChoices" class="guessInput">
-                  <input
-                      name="guessChoice"
-                      type="radio"
-                      value="{{choice.combinedSongInfo}}"
-                      ng-model="myGuess.guess" />
-                      {{choice.combinedSongInfo}}
+                    <input name="guessChoice" type="radio" value="{{choice.combinedSongInfo}}" ng-model="myGuess.guess" /> {{choice.combinedSongInfo}}
                 </div>
-                    <br>
-                    <div>
-                        <input type="submit" class="btn btn-primary" value="Guess!">
-                    </div>
-               
+                <br>
+                <div>
+                    <input type="submit" class="btn btn-primary" value="Guess!">
+                </div>
             </form>
         </div>
         <div class="col-xs-2"></div>
