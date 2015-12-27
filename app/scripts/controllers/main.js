@@ -87,17 +87,15 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
 
             return $http.get(url)
             .then (function(response){
-              //console.log('response for profile request: ', response.data);
               return response.data;
             }, function (error){
-              //console.log('failed to get profile', error.data);
               return error;
             });
 
           }
 
           if ($rootScope.access_token && (state == null || state !== storedState)) {
-                  console.log('There was an error during the authentication');
+                  // console.log('There was an error during the authentication');
                   $state.go('login');
                 } else {
                   localStorage.removeItem($rootScope.stateKey);
@@ -108,8 +106,6 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
                       $rootScope.email = response.email;
                       $rootScope.country = response.country;
                       $scope.loggedIn = true;
-                      // $rootScope.$digest();
-                      console.log("profile response", response)
                     })
 
                   } else {
@@ -143,7 +139,6 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
         if ($rootScope.round < $rootScope.maxRounds) {
             $scope.gameOverMessage = "You're out of time!";
         } else {
-        	console.log("scope wins", $scope.wins)
        		if ($scope.wins === $rootScope.maxRounds){
        			$scope.winner = true;
        			$scope.gameOverMessage = "Congratulations superstar! You won all " + $scope.maxRounds + " rounds!";
@@ -277,7 +272,6 @@ angular.module('ntsApp').controller('MainCtrl', ['$scope', '$rootScope', 'SongsF
     $scope.startTimer = function() {
     	$scope.correct = true;
     	$scope.$broadcast('timer-reset');
-        console.log("here then", $scope.songs[$scope.currentSong]);
         $scope.haveResult = false;
         $scope.$broadcast('timer-start');
         $scope.timerRunning = true;

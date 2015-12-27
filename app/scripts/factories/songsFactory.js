@@ -24,7 +24,6 @@ angular.module('ntsApp').factory('SongsFactory', ['$http', '$rootScope', functio
 	}
 
 	SongsFactory.getSongList = function (type){
-		// console.log('in get song list');
 		var url;
 		// if (playlistOptions[type].kind === "playlist"){
 			 url = 'https://api.spotify.com/v1/users/' + playlistOptions[type].user + '/playlists/' + playlistOptions[type].id + '/tracks?market=US&limit=30'
@@ -35,10 +34,8 @@ angular.module('ntsApp').factory('SongsFactory', ['$http', '$rootScope', functio
 
 		return $http.get(url)
 		.then (function(response){
-			console.log('response: ', response.data);
 			return response.data;
 		}, function (error){
-			console.log('failed to get songlist', error.data.error.message);
 			return error;
 		});
 	};
