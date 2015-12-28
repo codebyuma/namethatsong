@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ntsApp').factory('SongsFactory', function($http, $rootScope) {
+angular.module('ntsApp').factory('SongsFactory', ['$http', '$rootScope', function($http, $rootScope) {
     var SongsFactory = {};
 
     var playlistOptions = {
@@ -67,19 +67,9 @@ angular.module('ntsApp').factory('SongsFactory', function($http, $rootScope) {
         return Object.keys(playlistOptions);
     }
 
-    SongsFactory.getSongList = function(type) {
-        var url;
-        console.log("type", type);
-        console.log("typeof type", typeof type);
-        console.log("playlist options", playlistOptions);
-        console.log("playlist options type", playlistOptions[type]);
-        console.log("tryig with quote", playlistOptions["Current Top 40"]);
-        // if (playlistOptions[type].kind === "playlist"){
-        url = 'https://api.spotify.com/v1/users/' + playlistOptions[type].user + '/playlists/' + playlistOptions[type].id + '/tracks?market=US&limit=30'
-            // } else {
-            // 	url = 'https://api.spotify.com/v1/artists/' + playlistOptions[type].id +  '/top-tracks?country=US';
-
-        // }
+    SongsFactory.getSongList = function(selectedType) {
+        var selection = selectedType.trim();
+        var url = 'https://api.spotify.com/v1/users/' + playlistOptions[selection].user + '/playlists/' + playlistOptions[selection].id + '/tracks?market=US&limit=30'
 
         return $http.get(url)
             .then(function(response) {
@@ -118,4 +108,4 @@ angular.module('ntsApp').factory('SongsFactory', function($http, $rootScope) {
 
     return SongsFactory;
 
-});
+}]);
