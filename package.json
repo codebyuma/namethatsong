@@ -39,6 +39,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
+    "post-install": "grunt build",
     "test": "grunt test"
   }
 }
