@@ -69,6 +69,11 @@ angular.module('ntsApp').factory('SongsFactory', function($http, $rootScope) {
 
     SongsFactory.getSongList = function(type) {
         var url;
+        console.log("type", type);
+        console.log("typeof type", typeof type);
+        console.log("playlist options", playlistOptions);
+        console.log("playlist options type", playlistOptions[type]);
+        console.log("tryig with quote", playlistOptions["Current Top 40"]);
         // if (playlistOptions[type].kind === "playlist"){
         url = 'https://api.spotify.com/v1/users/' + playlistOptions[type].user + '/playlists/' + playlistOptions[type].id + '/tracks?market=US&limit=30'
             // } else {
