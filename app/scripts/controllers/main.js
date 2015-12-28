@@ -121,7 +121,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
         if ($rootScope.round < $rootScope.maxRounds) {
             $scope.gameOverMessage = "You're out of time!";
         } else {
-            if ($scope.wins === $rootScope.maxRounds) {
+            if ($scope.wins == $rootScope.maxRounds) {
                 $scope.winner = true;
                 $scope.gameOverMessage = "Congratulations superstar! You won all " + $scope.maxRounds + " rounds!";
             } else {
@@ -225,7 +225,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
                     $rootScope.ready = true;
                     $scope.winner = false;
 
-                }, 1000);
+                }, 2000);
 
             }
         })
