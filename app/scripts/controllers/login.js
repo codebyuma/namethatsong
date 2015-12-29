@@ -25,6 +25,7 @@ angular.module('ntsApp').controller('loginCtrl', function($scope, $rootScope, $h
         url += '&client_id=' + encodeURIComponent('7025ce5e8b8d4e839abd1fc0ba0fff17');
         url += '&scope=' + encodeURIComponent('user-read-private user-read-email');
         url += '&redirect_uri=' + encodeURIComponent('https://namethatsong.firebaseapp.com/');
+        //url += '&redirect_uri=' + encodeURIComponent('http://localhost:9000');
         url += '&state=' + encodeURIComponent(state);
 
         window.location = url;

@@ -29,6 +29,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
     $scope.myGuess = {};
     $scope.wins = 0;
     $scope.roundsRange = _.range(1, 10);
+    $scope.loading = false;
 
 
     /*** --------- Spotify Auth Functions - Implicit Grant Flow --------- ***/
@@ -221,11 +222,13 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
             if (count > 1) {
                 count--;
             } else {
+                $scope.loading = true;
                 $timeout(function() {
+                    $scope.loading = false;
                     $rootScope.ready = true;
                     $scope.winner = false;
 
-                }, 2000);
+                }, 3000);
 
             }
         })

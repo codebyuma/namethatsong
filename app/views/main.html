@@ -1,3 +1,15 @@
+
+<div class="row" ng-show="loading">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8">
+        Loading...<br>
+        <div class="spinner-loader">
+        </div>
+    </div>
+    <div class="col-xs-2"></div>
+</div>
+
+
 <div class="row">
     <div class="col-xs-2">
     </div>
@@ -6,7 +18,7 @@
             <i class="fa fa-trophy fa-lg" ng-show="winner"></i> {{ gameOverMessage }}
             <br>Final score: {{ score }}
         </div>
-        <div ng-show="!haveSongs() && start">
+        <div ng-show="!haveSongs() && start && !loading">
             <form role="form" ng-submit="addSongs()">
                 <div class="row">
                     <p></p>
@@ -25,7 +37,7 @@
     </div>
 </div>
 
-<div class="row" ng-show="!haveRounds && haveSongs()">
+<div class="row" ng-show="!haveRounds && haveSongs() && !loading">
     <div class="col-xs-2"></div>
     <div class="col-xs-8">
         <form role="form" ng-submit="submitRounds()">
@@ -45,7 +57,7 @@
     <div class="col-xs-2"></div>
 </div>
 
-<div class="play" ng-show="haveRounds && haveSongs() && !gameOver && !ready && haveResult">
+<div class="play" ng-show="haveRounds && haveSongs() && !gameOver && !ready && haveResult && !loading">
     <div class="row">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
@@ -60,7 +72,7 @@
     </div>
 </div>
 
-<div class="play" ng-show="haveRounds && haveSongs() && !gameOver && ready && !guessing">
+<div class="play" ng-show="haveRounds && haveSongs() && !gameOver && ready && !guessing && !loading">
     <div class="row">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
@@ -74,7 +86,7 @@
     </div>
 </div>
 
-<div class="container" ng-show="haveSongs() && !gameOver && guessing">
+<div class="container" ng-show="haveSongs() && !gameOver && guessing && !loading">
     <div class="row">
         <div class="col-md-2 col-xs-12"></div>
         <div class="col-md-8 col-xs-12">
