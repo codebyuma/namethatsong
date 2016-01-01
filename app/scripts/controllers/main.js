@@ -228,7 +228,7 @@ angular.module('ntsApp').controller('MainCtrl', function($scope, $rootScope, Son
                     $rootScope.ready = true;
                     $scope.winner = false;
 
-                }, 3000);
+                }, 4000);
 
             }
         })

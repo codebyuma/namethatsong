@@ -9,7 +9,7 @@ angular.module('ntsApp').factory('SongsFactory', ['$http', '$rootScope', functio
             kind: 'playlist',
             id: '5FJXhjdILmRA2z5bvz4nzf'
         },
-        "2015-2015 - Decade of Hits": {
+        "2005-2015 - Decade of Hits": {
             user: 'spotify',
             kind: 'playlist',
             id: '6nkmrRQv3EV5uRIbswshSm'
