@@ -5,7 +5,7 @@ Select a genre and see how many of the random songs you can identify before the 
 
 http://namethatsong.firebaseapp.com/ 
 
-# Tech used
+## Tech used
 
 Angular Fire (Angular.js + Firebase). ngAudio. Spotify API. HTML. CSS. Bootstrap.
 
