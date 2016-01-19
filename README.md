@@ -1,7 +1,7 @@
 # Name That Song
 Select a genre and see how many of the random songs you can identify before the timer runs out. The faster you guess, the more points you will receive. 
 
-# Play it now
+## Play it now
 
 http://namethatsong.firebaseapp.com/ 
 
